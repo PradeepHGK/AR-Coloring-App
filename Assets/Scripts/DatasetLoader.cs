@@ -7,26 +7,15 @@ using System.Linq;
 public class DatasetLoader : MonoBehaviour
 {
 
-	// Model is the GameObject to be augmented
-	//public GameObject Model;
-
-	// Use this for initialization
 	void Start()
 	{
 		// Registering call back to know when Vuforia is ready
 		VuforiaARController.Instance.RegisterVuforiaStartedCallback(OnVuforiaStarted);
 	}
 
-	// Update is called once per frame
-	void Update()
-	{
-
-	}
-
 	// This function is called when vuforia gives the started callback
 	void OnVuforiaStarted()
 	{
-
 		// The 'path' string determines the location of xml file
 		// For convinence the RealTime.xml is placed in the StreamingAssets folder
 		// This file can be downloaded and the relative path will be used accordingly
@@ -35,7 +24,7 @@ public class DatasetLoader : MonoBehaviour
 #if UNITY_IOS || UNITY_ANDROID
 		//path = Application.dataPath + "/Raw/RealTime.xml";
 		//path = "jar:file://" + Application.dataPath + "!/assets/RealTime.xml";
-		path = Application.dataPath + "/StreamingAssets/Vuforia/MagicToonz.xml";
+		path = Application.dataPath + "/XML/MagicToonz.xml";
 #else
 		path = Application.dataPath + "/StreamingAssets/Vuforia/MagicToonz.xml";
 #endif
@@ -61,6 +50,7 @@ public class DatasetLoader : MonoBehaviour
 
 		objectTracker.Stop();
 		IEnumerable<DataSet> dataSetList = objectTracker.GetActiveDataSets();
+
 		foreach (DataSet set in dataSetList.ToList())
 		{
 			objectTracker.DeactivateDataSet(set);
@@ -87,9 +77,14 @@ public class DatasetLoader : MonoBehaviour
 		objectTracker.ActivateDataSet(dataSet);
 		objectTracker.Start();
 
-		AttachContentToTrackables(dataSet);
+		foreach (var item in objectTracker.GetActiveDataSets())
+		{
+			Debug.Log( "Active DataSets: "+item.Path);
+		}
 
+		AttachContentToTrackables(dataSet);
 		return true;
+
 	}
 
 	// Add Trackable event handler and content (cubes) to the Targets.
@@ -108,8 +103,8 @@ public class DatasetLoader : MonoBehaviour
 				GameObject go = trackableBehaviour.gameObject;
 				// Add a Trackable event handler to the Trackable.
 				// This Behaviour handles Trackable lost/found callbacks.
-				go.name = trackableBehaviour.TrackableName;
 				go.AddComponent<DefaultTrackableEventHandler>();
+				go.name = trackableBehaviour.TrackableName;
 
 				// Instantiate the model.
 				// GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);

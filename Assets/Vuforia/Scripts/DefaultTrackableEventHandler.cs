@@ -60,13 +60,16 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
             newStatus == TrackableBehaviour.Status.EXTENDED_TRACKED)
         {
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " found");
+            Debug.Log("Trackable " + mTrackableBehaviour.Trackable + " found");
             OnTrackingFound();
+            EventManager.Instance.OnTrackingFoundInvoke(mTrackableBehaviour.TrackableName);
+
         }
         else if (previousStatus == TrackableBehaviour.Status.TRACKED &&
                  newStatus == TrackableBehaviour.Status.NOT_FOUND)
         {
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " lost");
-            OnTrackingLost();   
+            OnTrackingLost();
         }
         else
         {
@@ -99,7 +102,7 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
         foreach (var component in canvasComponents)
             component.enabled = true;
 
-        BundlerHander.Instance.InstantiateModel(targetBehaviour.ImageTarget.Name);
+        //BundlerHander.Instance.InstantiateModel(targetBehaviour.ImageTarget.Name);
 
     }
 
