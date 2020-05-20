@@ -24,7 +24,6 @@ public class Scan_uiHandler : MonoBehaviour
             ProductScreen.SetActive(true);
             downloadimage.GetComponent<Image>().fillAmount = 1;
             UI_Manager.changescr = UI_Manager.screenStates.productsList;
-
             Debug.Log("StartScanFileNotExist");
         }
         else

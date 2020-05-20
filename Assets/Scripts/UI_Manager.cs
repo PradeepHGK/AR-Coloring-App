@@ -5,38 +5,9 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.IO;
 
-public class UI_Manager : MonoBehaviour
+
+public class UI_Manager : Pixelplacement.Singleton<UI_Manager>
 {
-
-
-	public static UI_Manager UI_instance;
-	//public DownloadAssetBundle downloadBundle;
-	AssetBundle assetbundle;
-	private void Awake()
-	{
-		if (UI_instance == null)
-		{
-			UI_instance = this;
-			DontDestroyOnLoad(this.gameObject);
-		}
-	}
-
-
-	/*public static UI_Manager ui_instance
-	{
-		get
-		{
-			if (UI_instance == null)
-			{
-				UI_instance = new UI_Manager();
-			}
-			return UI_instance;
-		}
-	}*/
-
-
-	public static string screenChange;
-
 	public enum screenStates
 	{
 
@@ -52,15 +23,15 @@ public class UI_Manager : MonoBehaviour
 		feedback,
 		AppQuit
 	};
+	AssetBundle assetbundle;
 
+	public static string screenChange;
 	public static screenStates changescr;
 	public Text DownloadText = null;
-
 
 	[Header("Screens")]
 	public GameObject menuScreen;
 	public GameObject splashscreen, progrssbar, signScreen;
-
 
 	float waitTime = 2.0f;
 	public bool coolingDown = true;
@@ -71,19 +42,13 @@ public class UI_Manager : MonoBehaviour
 	//public GameObject Parent;
 	//public Text ErrorText;
 
-	// Use this for initialization
 	void Start()
 	{
-
 		//downloadBundle = GameObject.Find("Directional Light").GetComponent <DownloadAssetBundle>();
-
 		progrssbar.GetComponent<Image>().fillAmount = 0f;
-
 		//StartCoroutine(CallSplash());
-
 		splashscreen.gameObject.SetActive(true);
 		menuScreen.gameObject.SetActive(false);
-
 
 		if (screenChange == "FromScan")
 		{
@@ -92,31 +57,23 @@ public class UI_Manager : MonoBehaviour
 			splashscreen.SetActive(false);
 			menuScreen.SetActive(true);
 		}
-
 		//changescr = screenStates.menuscreen;
 	}
 
-
-
 	public void HideSplash()
 	{
-
 		splashscreen.gameObject.SetActive(false);
 		menuScreen.gameObject.SetActive(true);
-		//Debug.Log("MenuScreen");
 	}
 
-	//
 	public void tryDemo()
 	{
-		//StartCoroutine(callTryDemo());
-
+		StartCoroutine(callTryDemo());
 	}
 
 	//call try demo
 	public IEnumerator callTryDemo()
 	{
-
 		changescr = screenStates.ScanScreen;
 		yield return null;
 
