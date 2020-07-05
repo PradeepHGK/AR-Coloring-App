@@ -9,28 +9,24 @@ public class BundlerHander : Pixelplacement.Singleton<BundlerHander>
 
     AssetBundle assetbundle;
     WWW www;
-    Scan_uiHandler uiHandler;
+    ScanSceneUIHandler uiHandler;
     GameObject Parent;
     public GameObject loadingImage;
     public GameObject ParentRef;
 
-    [Space(10)]
-    public GameObject animBtnPlay, animBtnStop;
 
-    string bundleurl = "https://s3-ap-southeast-1.amazonaws.com/deltabundlebucket/delta";
+
+    string bundleurl = "https://pradeepdevbuckets.s3.ap-south-1.amazonaws.com/volume1";
 
     // Use this for initialization
     void Start()
     {
-        uiHandler = GameObject.Find("Bundle_Controller").GetComponent<Scan_uiHandler>();
         Caching.ClearCache();
     }
 
     public void CallAssetBundleDownload()
     {
-
         StartCoroutine(AssetBundleDownload());
-
     }
 
     public IEnumerator AssetBundleDownload()
@@ -41,7 +37,7 @@ public class BundlerHander : Pixelplacement.Singleton<BundlerHander>
         string fbxFile = Application.persistentDataPath + "/" + "delta.unity3d";
 
         www = new WWW(bundleurl);
-        uiHandler.downloadingText.GetComponent<Text>().text = "Download please wait..";
+        ScanSceneUIHandler.Instance.downloadingText.GetComponent<Text>().text = "Download please wait..";
         while (!www.isDone && www.error == null)
         {
 
@@ -50,10 +46,10 @@ public class BundlerHander : Pixelplacement.Singleton<BundlerHander>
 #endif
 
             //PlayerPrefs.SetString("AssetBundle", "Download");
-            uiHandler.downloadimage.GetComponent<Image>().fillAmount -= www.progress / 10 * Time.deltaTime;
-            if (uiHandler.downloadimage.GetComponent<Image>().fillAmount == 0)
+            ScanSceneUIHandler.Instance.downloadimage.GetComponent<Image>().fillAmount -= www.progress / 10 * Time.deltaTime;
+            if (ScanSceneUIHandler.Instance.downloadimage.GetComponent<Image>().fillAmount == 0)
             {
-                uiHandler.downloadingText.GetComponent<Text>().text = "Processing please wait...";
+                ScanSceneUIHandler.Instance.downloadingText.GetComponent<Text>().text = "Processing please wait...";
             }
 
             Debug.Log("notDone");
@@ -62,8 +58,6 @@ public class BundlerHander : Pixelplacement.Singleton<BundlerHander>
             {
                 isDownloadInterrupted = true;
                 break;
-
-
             }
 
             yield return null;
@@ -72,8 +66,6 @@ public class BundlerHander : Pixelplacement.Singleton<BundlerHander>
 
         if ((www.error != null && !www.isDone) || isDownloadInterrupted == true)
         {
-
-
             if (isDownloadInterrupted)
             {
                 print("Connection Error.... Retrying Download");
@@ -88,16 +80,13 @@ public class BundlerHander : Pixelplacement.Singleton<BundlerHander>
 
         if (www != null && www.isDone && www.error == null)
         {
-
-            uiHandler.downloadimage.GetComponent<Image>().fillAmount = 0;
+            ScanSceneUIHandler.Instance.downloadimage.GetComponent<Image>().fillAmount = 0;
             FileStream stream = new FileStream(fbxFile, FileMode.Create);
             stream.Write(www.bytes, 0, www.bytes.Length);
             stream.Close();
 
-            uiHandler.downloadingText.GetComponent<Text>().text = "Please click Chapter 1";
+            ScanSceneUIHandler.Instance.downloadingText.GetComponent<Text>().text = "Please click Chapter 1";
         }
-
-
     }
 
     public IEnumerator LoadBundles()
@@ -112,7 +101,6 @@ public class BundlerHander : Pixelplacement.Singleton<BundlerHander>
         {
             yield return null;
         }
-
 
         Debug.Log("File------" + File.Exists(Application.persistentDataPath + " / " + "delta.unity3d"));
         Debug.Log("Assetbundle_bool: " + Application.persistentDataPath.Contains("delta.unity3d"));
@@ -135,33 +123,18 @@ public class BundlerHander : Pixelplacement.Singleton<BundlerHander>
         }
         else
         {
-
             assetbundle = loadBundles.assetBundle;
             foreach (string assetName in assetbundle.GetAllAssetNames())
             {
                 print("#" + assetName);
             }
-
-            //if (uiHandler._load_downloded_bundle == true)
-            //{
-            //    InstantiateModel(DefaultTrackableEventHandler.mTrackableBehaviour.TrackableName);
-            //}
-
-
-
-
         }
 
     }
 
     public void InstantiateModel(string TrackableName)
     {
-
         loadingImage.SetActive(true);
-
-        //Parent = new GameObject();
-        //Parent.name = "Parent";
-
 
         Parent = GameObject.Find(TrackableName);
         ParentRef = Parent;
@@ -172,43 +145,43 @@ public class BundlerHander : Pixelplacement.Singleton<BundlerHander>
         Model.transform.SetParent(Parent.transform);
 
 
-        AssetBundleRequest AudioAssetBundleRequest1 = assetbundle.LoadAssetAsync(TrackableName + ".mp3", typeof(AudioClip));
+        /*        AssetBundleRequest AudioAssetBundleRequest1 = assetbundle.LoadAssetAsync(TrackableName + ".mp3", typeof(AudioClip));
 
-        Debug.Log("AudioAssets: " + AudioAssetBundleRequest1.asset.GetType());
+                Debug.Log("AudioAssets: " + AudioAssetBundleRequest1.asset.GetType());
 
-        if (AudioAssetBundleRequest1 != null)
-        {
-            Debug.Log("AudioAssets: Not Null");
-            AudioClip audioGameObject1 = AudioAssetBundleRequest1.asset as AudioClip;
-            Debug.Log("AudioClip: " + audioGameObject1.GetType() + "\n Name: " + audioGameObject1.name);
-            if (audioGameObject1 != null)
-            {
-                Debug.Log("AudioClipName: " + audioGameObject1.name);
-                Parent.gameObject.AddComponent<AudioSource>();
-                Parent.gameObject.GetComponent<AudioSource>().clip = audioGameObject1;
-                Parent.gameObject.GetComponent<AudioSource>().Play();
-            }
-        }
-
+                if (AudioAssetBundleRequest1 != null)
+                {
+                    Debug.Log("AudioAssets: Not Null");
+                    AudioClip audioGameObject1 = AudioAssetBundleRequest1.asset as AudioClip;
+                    Debug.Log("AudioClip: " + audioGameObject1.GetType() + "\n Name: " + audioGameObject1.name);
+                    if (audioGameObject1 != null)
+                    {
+                        Debug.Log("AudioClipName: " + audioGameObject1.name);
+                        Parent.gameObject.AddComponent<AudioSource>();
+                        Parent.gameObject.GetComponent<AudioSource>().clip = audioGameObject1;
+                        Parent.gameObject.GetComponent<AudioSource>().Play();
+                    }
+                }
+        */
 
         loadingImage.SetActive(false);
 
-        switch (TrackableName)
-        {
-            case "Cow":
-                Model.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
-                Model.transform.localPosition = new Vector3(0, 0.25f, 0);
-                break;
-            case "Horse":
-                Model.transform.localScale = new Vector3(2f, 2f, 2f);
-                break;
-            case "Rabbit":
-                Model.transform.localScale = new Vector3(3f, 3f, 3f);
-                break;
+        /*        switch (TrackableName)
+                {
+                    case "Cow":
+                        Model.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+                        Model.transform.localPosition = new Vector3(0, 0.25f, 0);
+                        break;
+                    case "Horse":
+                        Model.transform.localScale = new Vector3(2f, 2f, 2f);
+                        break;
+                    case "Rabbit":
+                        Model.transform.localScale = new Vector3(3f, 3f, 3f);
+                        break;
 
 
-        }
-
+                }
+        */
 
         AssignRC();
     }
@@ -222,13 +195,11 @@ public class BundlerHander : Pixelplacement.Singleton<BundlerHander>
         foreach (SkinnedMeshRenderer Mesh in ModelSkinMesh)
         {
             Mesh.gameObject.AddComponent<RC_Get_Texture>();
-
         }
 
         foreach (MeshRenderer Mesh in ModelMesh)
         {
             Mesh.gameObject.AddComponent<RC_Get_Texture>();
-
         }
     }
 
@@ -241,16 +212,16 @@ public class BundlerHander : Pixelplacement.Singleton<BundlerHander>
         Debug.Log("Animator_Exist");
         if (_animatorParameter == false)
         {
-            animBtnPlay.SetActive(false);
-            animBtnStop.SetActive(true);
+            //animBtnPlay.SetActive(false);
+            //animBtnStop.SetActive(true);
             _animatorModel.SetBool("Run", true);
             _animatorParameter = true;
             Debug.Log("Animator_Run");
         }
         else
         {
-            animBtnPlay.SetActive(true);
-            animBtnStop.SetActive(false);
+            //animBtnPlay.SetActive(true);
+            //animBtnStop.SetActive(false);
             _animatorModel.GetComponent<Animator>().SetBool("Run", false);
             _animatorParameter = false;
             Debug.Log("Animator_Stop");
@@ -267,12 +238,10 @@ public class BundlerHander : Pixelplacement.Singleton<BundlerHander>
 
         using (UnityWebRequest getassetbundle = UnityWebRequest.GetAssetBundle("https://s3-ap-southeast-1.amazonaws.com/deltabundlebucket/delta"))
         {
-
             //getassetbundle.downloadHandler = new DownloadHandlerFile(fbxFile);
 
             //yield return getassetbundle.SendWebRequest();
             yield return null;
-
             //AsyncOperation bundlereq = getassetbundle.SendWebRequest();
 
             //while (!bundlereq.isDone)
@@ -299,30 +268,27 @@ public class BundlerHander : Pixelplacement.Singleton<BundlerHander>
             else
             {
                 //AssetBundle assetbundleDelta = DownloadHandlerAssetBundle.GetContent(getassetbundle);
-
             }
         }
-
     }
 
 
-    IEnumerator GetAssetBundle()
-    {
-        UnityWebRequest www = UnityWebRequest.GetAssetBundle(bundleurl);
-        yield return www.SendWebRequest();
-        Debug.Log(www.downloadProgress);
-        if (www.isNetworkError || www.isHttpError)
+    /*    IEnumerator GetAssetBundle()
         {
-            Debug.Log(www.error);
+            UnityWebRequest www = UnityWebRequest.GetAssetBundle(bundleurl);
+            yield return www.SendWebRequest();
+            Debug.Log(www.downloadProgress);
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                AssetBundle bundle = DownloadHandlerAssetBundle.GetContent(www);
+                Debug.Log(www.responseCode);
+            }
         }
-        else
-        {
-            AssetBundle bundle = DownloadHandlerAssetBundle.GetContent(www);
-            Debug.Log(www.responseCode);
-
-        }
-    }
-
+    */
 
     /* IEnumerator Loadbundles()
      {
@@ -335,18 +301,4 @@ public class BundlerHander : Pixelplacement.Singleton<BundlerHander>
          AssetBundleRequest assetbundleRequest = myassetbundle.LoadAssetAsync<GameObject>("");
 
      }*/
-
-
-    // Update is called once per frame
-    void Update()
-    {
-
-        //if (PlayerPrefs.GetString("AssetBundle") == "Download")
-        //{
-        //    UI_Manager.UI_instance.productscreen.transform.GetChild(1).transform.GetChild(1).GetComponent<Image>().fillAmount -= www.progress * 100;
-
-        //}
-
-
-    }
 }

@@ -3,7 +3,7 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
 
 public class CreateAssetBundles
 {
@@ -11,14 +11,14 @@ public class CreateAssetBundles
 
 	static void BuildAllAssetBundles()
 	{
-		string assetBundleDirectory = "Assets/s";
+		string assetBundleDirectory = "Assets/Assetbundle/";
 
 		if(!Directory.Exists(assetBundleDirectory))
 		{
 			Directory.CreateDirectory(assetBundleDirectory);
 		}
-//		BuildPipeline.BuildAssetBundles(assetBundleDirectory, BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows);
-	
+
+		//AssetImporter.GetAtPath(assetBundleDirectory).SetAssetBundleNameAndVariant("Volume1" + DateTime.Today.Minute, "");
 		BuildPipeline.BuildAssetBundles(assetBundleDirectory, BuildAssetBundleOptions.UncompressedAssetBundle, EditorUserBuildSettings.activeBuildTarget);
 
 		#if UNITY_ANDROID

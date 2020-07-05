@@ -15,23 +15,13 @@ using Vuforia;
 public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
 {
     #region PROTECTED_MEMBER_VARIABLES
-
-    ImageTargetBehaviour targetBehaviour;
-
     public static TrackableBehaviour mTrackableBehaviour;
-
-    
-
-    
-
     #endregion // PROTECTED_MEMBER_VARIABLES
 
     #region UNITY_MONOBEHAVIOUR_METHODS
 
     protected virtual void Start()
     {
-        targetBehaviour = GetComponent<ImageTargetBehaviour>();
-
         mTrackableBehaviour = GetComponent<TrackableBehaviour>();
         if (mTrackableBehaviour)
             mTrackableBehaviour.RegisterTrackableEventHandler(this);
@@ -59,11 +49,10 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
             newStatus == TrackableBehaviour.Status.TRACKED ||
             newStatus == TrackableBehaviour.Status.EXTENDED_TRACKED)
         {
-            Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " found");
-            Debug.Log("Trackable " + mTrackableBehaviour.Trackable + " found");
+            Debug.LogWarning("Trackable " + mTrackableBehaviour.TrackableName + " found");
+            Debug.LogWarning("Trackable " + mTrackableBehaviour.Trackable + " found");
             OnTrackingFound();
             EventManager.Instance.OnTrackingFoundInvoke(mTrackableBehaviour.TrackableName);
-
         }
         else if (previousStatus == TrackableBehaviour.Status.TRACKED &&
                  newStatus == TrackableBehaviour.Status.NOT_FOUND)

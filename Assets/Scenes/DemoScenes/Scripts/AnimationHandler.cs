@@ -12,7 +12,6 @@ public class AnimationHandler : MonoBehaviour
     public AudioSource AudioSource;
 
     public event Action AudioEvent;
-    public void AudioEvenTrigger() { AudioEvent.Invoke(); }
     bool isAudioPlaying;
     public DefaultTrackableEventHandler DefaultTrackableEventHandler;
     ImageTargetBehaviour ImageTargetBehaviour;
@@ -35,12 +34,7 @@ public class AnimationHandler : MonoBehaviour
         ImageTargetBehaviour = new ImageTargetBehaviour();
            
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+    private void AudioEvenTrigger() { AudioEvent.Invoke(); }
 
     public void DisableLoadingScreen() 
     {
@@ -48,9 +42,9 @@ public class AnimationHandler : MonoBehaviour
         closeBtn.SetActive(true);
     }
 
-    public void QuitApp() { Application.Quit(); }
+    private void QuitApp() { Application.Quit(); }
 
-    public void AssignAudio()
+    private void AssignAudio()
     {
         //Debug.Log("Target: " + DefaultTrackableEventHandler.myString);
         //switch (DefaultTrackableEventHandler.name)
@@ -66,7 +60,7 @@ public class AnimationHandler : MonoBehaviour
         //}
     }
 
-    public void AudioHandler()
+    private void AudioHandler()
     {
         //if (isAudioPlaying)
         //{
@@ -83,6 +77,4 @@ public class AnimationHandler : MonoBehaviour
     }
 
     void StopAudio() { AudioSource.Stop(); }
-
-        
 }

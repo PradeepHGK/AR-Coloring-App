@@ -17,6 +17,6 @@ public class ModelLoader : Pixelplacement.Singleton<ModelLoader>
 
     private void LoadModel_OnTrackingFound(string trackableName)
     {
-        Debug.Log("trackableName -->" + trackableName);
+        Debug.LogWarning("trackableName -->" + trackableName);
     }
 }

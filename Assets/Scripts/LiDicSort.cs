@@ -52,7 +52,6 @@ public class LiDicSort : MonoBehaviour {
         string addstringToEnum = "StringtoEnum";
         var stateMachines = (stateMachine)Enum.Parse(typeof(stateMachine), addstringToEnum);
 
-        var ss = new ScanScene();
         var arraysample = new int[5];
 
         var Personame = string.Join("-", names);
