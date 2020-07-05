@@ -37,7 +37,7 @@ public class BundlerHander : Pixelplacement.Singleton<BundlerHander>
         string fbxFile = Application.persistentDataPath + "/" + "delta.unity3d";
 
         www = new WWW(bundleurl);
-        ScanSceneUIHandler.Instance.downloadingText.GetComponent<Text>().text = "Download please wait..";
+        ScanSceneUIHandler.Instance.DownloadingText.GetComponent<Text>().text = "Download please wait..";
         while (!www.isDone && www.error == null)
         {
 
@@ -46,10 +46,10 @@ public class BundlerHander : Pixelplacement.Singleton<BundlerHander>
 #endif
 
             //PlayerPrefs.SetString("AssetBundle", "Download");
-            ScanSceneUIHandler.Instance.downloadimage.GetComponent<Image>().fillAmount -= www.progress / 10 * Time.deltaTime;
-            if (ScanSceneUIHandler.Instance.downloadimage.GetComponent<Image>().fillAmount == 0)
+            ScanSceneUIHandler.Instance.DownloadImage.GetComponent<Image>().fillAmount -= www.progress / 10 * Time.deltaTime;
+            if (ScanSceneUIHandler.Instance.DownloadImage.GetComponent<Image>().fillAmount == 0)
             {
-                ScanSceneUIHandler.Instance.downloadingText.GetComponent<Text>().text = "Processing please wait...";
+                ScanSceneUIHandler.Instance.DownloadImage.GetComponent<Text>().text = "Processing please wait...";
             }
 
             Debug.Log("notDone");
@@ -77,15 +77,14 @@ public class BundlerHander : Pixelplacement.Singleton<BundlerHander>
             }
         }
 
-
         if (www != null && www.isDone && www.error == null)
         {
-            ScanSceneUIHandler.Instance.downloadimage.GetComponent<Image>().fillAmount = 0;
+            ScanSceneUIHandler.Instance.DownloadImage.GetComponent<Image>().fillAmount = 0;
             FileStream stream = new FileStream(fbxFile, FileMode.Create);
             stream.Write(www.bytes, 0, www.bytes.Length);
             stream.Close();
 
-            ScanSceneUIHandler.Instance.downloadingText.GetComponent<Text>().text = "Please click Chapter 1";
+            ScanSceneUIHandler.Instance.DownloadingText.GetComponent<Text>().text = "Please click Chapter 1";
         }
     }
 

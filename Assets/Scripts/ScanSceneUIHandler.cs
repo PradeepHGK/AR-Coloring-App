@@ -12,7 +12,31 @@ public class ScanSceneUIHandler : Singleton<ScanSceneUIHandler>
     [SerializeField] private GameObject ActivationScreen;
     [SerializeField] private GameObject ScanScreen;
     [SerializeField] private GameObject downloadimage;
+    public GameObject DownloadImage
+    {
+        get
+        {
+            return downloadimage;
+        }
+
+        set
+        {
+            downloadimage = value;
+        }
+    }
     [SerializeField] private GameObject downloadingText;
+    public GameObject DownloadingText
+    {
+        get
+        {
+            return downloadingText;
+        }
+        set
+        {
+            downloadingText = value;
+        }
+    }
+
     [SerializeField] private GameObject backbtn;
 
     public Text errortext;
