@@ -1,22 +1,39 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using System.IO;
 using UnityEngine.UI;
-public class BundlerHander : Pixelplacement.Singleton<BundlerHander>
+
+public class AssetbundleManager : Pixelplacement.Singleton<AssetbundleManager>
 {
 
-    AssetBundle assetbundle;
-    WWW www;
-    ScanSceneUIHandler uiHandler;
-    GameObject Parent;
-    public GameObject loadingImage;
+    private AssetBundle assetbundle;
+    public AssetBundle DeltaAssetbundle { get { return assetbundle; } }
+    private WWW www;
+    private ScanUIManager uiHandler;
+    private GameObject Parent;
+    private string bundleurl = "https://pradeepdevbuckets.s3.ap-south-1.amazonaws.com/volume1";
+    private bool _animatorParameter;
+
+    private GameObject loadingImage;
+    public GameObject LoadingImage { get { return loadingImage; } set { loadingImage = value; } }
     public GameObject ParentRef;
 
+    void OnEnable()
+    {
+        EventManager.Instance.DownloadAssetbundle += DownloadAssetbundle;
+    }
 
+    void OnDisable()
+    {
+        EventManager.Instance.DownloadAssetbundle -= DownloadAssetbundle;
+    }
 
-    string bundleurl = "https://pradeepdevbuckets.s3.ap-south-1.amazonaws.com/volume1";
+    private void DownloadAssetbundle()
+    {
+        StartCoroutine(AssetBundleDownload());
+    }
+
 
     // Use this for initialization
     void Start()
@@ -24,52 +41,39 @@ public class BundlerHander : Pixelplacement.Singleton<BundlerHander>
         Caching.ClearCache();
     }
 
-    public void CallAssetBundleDownload()
-    {
-        StartCoroutine(AssetBundleDownload());
-    }
-
     public IEnumerator AssetBundleDownload()
     {
-
         bool isDownloadInterrupted = false;
-
-        string fbxFile = Application.persistentDataPath + "/" + "delta.unity3d";
+        string fbxFile = Application.persistentDataPath + "/" + "volume1";
 
         www = new WWW(bundleurl);
-        ScanSceneUIHandler.Instance.DownloadingText.GetComponent<Text>().text = "Download please wait..";
+        ScanUIManager.Instance.DownloadingText.GetComponent<Text>().text = "Download please wait..";
         while (!www.isDone && www.error == null)
         {
 
 #if UNITY_EDITOR
             Debug.Log(www.progress * 100);
 #endif
-
             //PlayerPrefs.SetString("AssetBundle", "Download");
-            ScanSceneUIHandler.Instance.DownloadImage.GetComponent<Image>().fillAmount -= www.progress / 10 * Time.deltaTime;
-            if (ScanSceneUIHandler.Instance.DownloadImage.GetComponent<Image>().fillAmount == 0)
+            ScanUIManager.Instance.DownloadImage.GetComponent<Image>().fillAmount -= www.progress / 10 * Time.deltaTime;
+            if (ScanUIManager.Instance.DownloadImage.GetComponent<Image>().fillAmount == 0)
             {
-                ScanSceneUIHandler.Instance.DownloadImage.GetComponent<Text>().text = "Processing please wait...";
+                //ScanUIManager.Instance.DownloadImage.GetComponent<Text>().text = "Processing please wait...";
             }
-
-            Debug.Log("notDone");
 
             if (Application.internetReachability == NetworkReachability.NotReachable)
             {
                 isDownloadInterrupted = true;
                 break;
             }
-
             yield return null;
         }
-
 
         if ((www.error != null && !www.isDone) || isDownloadInterrupted == true)
         {
             if (isDownloadInterrupted)
             {
                 print("Connection Error.... Retrying Download");
-
             }
             else
             {
@@ -79,12 +83,12 @@ public class BundlerHander : Pixelplacement.Singleton<BundlerHander>
 
         if (www != null && www.isDone && www.error == null)
         {
-            ScanSceneUIHandler.Instance.DownloadImage.GetComponent<Image>().fillAmount = 0;
+            ScanUIManager.Instance.DownloadImage.GetComponent<Image>().fillAmount = 0;
             FileStream stream = new FileStream(fbxFile, FileMode.Create);
             stream.Write(www.bytes, 0, www.bytes.Length);
             stream.Close();
 
-            ScanSceneUIHandler.Instance.DownloadingText.GetComponent<Text>().text = "Please click Chapter 1";
+            ScanUIManager.Instance.DownloadingText.GetComponent<Text>().text = "Please click Chapter 1";
         }
     }
 
@@ -101,11 +105,10 @@ public class BundlerHander : Pixelplacement.Singleton<BundlerHander>
             yield return null;
         }
 
-        Debug.Log("File------" + File.Exists(Application.persistentDataPath + " / " + "delta.unity3d"));
-        Debug.Log("Assetbundle_bool: " + Application.persistentDataPath.Contains("delta.unity3d"));
+        Debug.Log("File------" + File.Exists(Application.persistentDataPath + " / " + "volume1"));
+        Debug.Log("Assetbundle_bool: " + Application.persistentDataPath.Contains("volume1"));
 
-
-        WWW loadBundles = WWW.LoadFromCacheOrDownload("file://" + Application.persistentDataPath + "/" + "delta.unity3d", 1);
+        WWW loadBundles = WWW.LoadFromCacheOrDownload("file://" + Application.persistentDataPath + "/" + "volume1", 1);
         yield return loadBundles;
 
         assetbundle = loadBundles.assetBundle;
@@ -131,83 +134,10 @@ public class BundlerHander : Pixelplacement.Singleton<BundlerHander>
 
     }
 
-    public void InstantiateModel(string TrackableName)
-    {
-        loadingImage.SetActive(true);
-
-        Parent = GameObject.Find(TrackableName);
-        ParentRef = Parent;
-
-        AssetBundleRequest targetAssetBundleRequest1 = assetbundle.LoadAssetAsync(TrackableName + ".prefab", typeof(GameObject));
-        GameObject ModelGameObject1 = targetAssetBundleRequest1.asset as GameObject;
-        GameObject Model = Instantiate(ModelGameObject1);
-        Model.transform.SetParent(Parent.transform);
-
-
-        /*        AssetBundleRequest AudioAssetBundleRequest1 = assetbundle.LoadAssetAsync(TrackableName + ".mp3", typeof(AudioClip));
-
-                Debug.Log("AudioAssets: " + AudioAssetBundleRequest1.asset.GetType());
-
-                if (AudioAssetBundleRequest1 != null)
-                {
-                    Debug.Log("AudioAssets: Not Null");
-                    AudioClip audioGameObject1 = AudioAssetBundleRequest1.asset as AudioClip;
-                    Debug.Log("AudioClip: " + audioGameObject1.GetType() + "\n Name: " + audioGameObject1.name);
-                    if (audioGameObject1 != null)
-                    {
-                        Debug.Log("AudioClipName: " + audioGameObject1.name);
-                        Parent.gameObject.AddComponent<AudioSource>();
-                        Parent.gameObject.GetComponent<AudioSource>().clip = audioGameObject1;
-                        Parent.gameObject.GetComponent<AudioSource>().Play();
-                    }
-                }
-        */
-
-        loadingImage.SetActive(false);
-
-        /*        switch (TrackableName)
-                {
-                    case "Cow":
-                        Model.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
-                        Model.transform.localPosition = new Vector3(0, 0.25f, 0);
-                        break;
-                    case "Horse":
-                        Model.transform.localScale = new Vector3(2f, 2f, 2f);
-                        break;
-                    case "Rabbit":
-                        Model.transform.localScale = new Vector3(3f, 3f, 3f);
-                        break;
-
-
-                }
-        */
-
-        AssignRC();
-    }
-
-
-    void AssignRC()
-    {
-        Component[] ModelSkinMesh = Parent.transform.GetChild(0).GetComponentsInChildren<SkinnedMeshRenderer>();
-        Component[] ModelMesh = Parent.transform.GetChild(0).GetComponentsInChildren<MeshRenderer>();
-
-        foreach (SkinnedMeshRenderer Mesh in ModelSkinMesh)
-        {
-            Mesh.gameObject.AddComponent<RC_Get_Texture>();
-        }
-
-        foreach (MeshRenderer Mesh in ModelMesh)
-        {
-            Mesh.gameObject.AddComponent<RC_Get_Texture>();
-        }
-    }
-
-    private bool _animatorParameter;
     public void PlayAnimation()
     {
         //GameObject _animatorModel = GameObject.FindGameObjectWithTag("Model");
         Animator _animatorModel = ParentRef.transform.GetChild(0).gameObject.GetComponent<Animator>();
-
         Debug.Log("Animator_Exist");
         if (_animatorParameter == false)
         {
@@ -225,10 +155,7 @@ public class BundlerHander : Pixelplacement.Singleton<BundlerHander>
             _animatorParameter = false;
             Debug.Log("Animator_Stop");
         }
-
     }
-
-
 
     IEnumerator DownloadBundle()
     {
@@ -270,7 +197,6 @@ public class BundlerHander : Pixelplacement.Singleton<BundlerHander>
             }
         }
     }
-
 
     /*    IEnumerator GetAssetBundle()
         {

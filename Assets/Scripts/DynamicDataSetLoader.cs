@@ -1,23 +1,17 @@
 ﻿using UnityEngine;
-using System.Collections;
-
 using Vuforia;
 using System.Collections.Generic;
 
-
 public class DynamicDataSetLoader : MonoBehaviour
 {
-	// specify these in Unity Inspector
 	public GameObject augmentationObject = null;  // you can use teapot or other object
 	public string dataSetName = "E:/Apps?GitHub/AR_Coloring _App/Assets/XML/";  //  Assets/StreamingAssets/QCAR/DataSetName
 
-
-	// Use this for initialization
 	void Start()
 	{
 		// Vuforia 6.2+
 		VuforiaARController.Instance.RegisterVuforiaStartedCallback(LoadDataSet);
-	}
+	} 
 
 	void LoadDataSet()
 	{

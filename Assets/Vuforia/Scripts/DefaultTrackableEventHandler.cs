@@ -49,10 +49,8 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
             newStatus == TrackableBehaviour.Status.TRACKED ||
             newStatus == TrackableBehaviour.Status.EXTENDED_TRACKED)
         {
-            Debug.LogWarning("Trackable " + mTrackableBehaviour.TrackableName + " found");
-            Debug.LogWarning("Trackable " + mTrackableBehaviour.Trackable + " found");
             OnTrackingFound();
-            EventManager.Instance.OnTrackingFoundInvoke(mTrackableBehaviour.TrackableName);
+            EventManager.Instance.OnTrackingFoundInvoke(mTrackableBehaviour.TrackableName, this.gameObject);
         }
         else if (previousStatus == TrackableBehaviour.Status.TRACKED &&
                  newStatus == TrackableBehaviour.Status.NOT_FOUND)

@@ -5252,13 +5252,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dontDestroyOnLoad: 0
-  ProductScreen: {fileID: 0}
-  ActivationScreen: {fileID: 0}
-  ScanScreen: {fileID: 0}
-  downloadimage: {fileID: 0}
-  downloadingText: {fileID: 0}
-  backbtn: {fileID: 0}
-  errortext: {fileID: 0}
+  ProductScreen: {fileID: 516412816}
+  ActivationScreen: {fileID: 1346105666}
+  ScanScreen: {fileID: 998278527}
+  downloadimage: {fileID: 49362073}
+  downloadingText: {fileID: 890002217}
+  backbtn: {fileID: 336255275}
+  errortext: {fileID: 890002219}
   animBtnPlay: {fileID: 0}
   animBtnStop: {fileID: 0}
   playAudioBtn: {fileID: 0}

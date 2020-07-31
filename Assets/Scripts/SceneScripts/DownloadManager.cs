@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -32,13 +31,5 @@ public class DownloadManager : Pixelplacement.Singleton<DownloadManager>
         {
             TextComp.text = uwr.isNetworkError.ToString();
         }
-
-
-    }
-
-    public void DownloadObjects(string url)
-    {
-        UnityWebRequest unityWebRequest = UnityWebRequest.Get(url);
-        unityWebRequest.SendWebRequest();
     }
 }

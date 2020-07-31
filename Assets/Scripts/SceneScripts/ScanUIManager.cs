@@ -3,10 +3,10 @@ using System.IO;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Pixelplacement;
+using System;
 
-public class ScanSceneUIHandler : Singleton<ScanSceneUIHandler>
+public class ScanUIManager : Singleton<ScanUIManager>
 {
-
     [Header("Screen References")]
     [SerializeField] private GameObject ProductScreen;
     [SerializeField] private GameObject ActivationScreen;
@@ -38,11 +38,14 @@ public class ScanSceneUIHandler : Singleton<ScanSceneUIHandler>
     }
 
     [SerializeField] private GameObject backbtn;
-
     public Text errortext;
-    [Space(10)]
-    public GameObject animBtnPlay, animBtnStop;
-    public Button playAudioBtn, pauseAudioBtn;
+
+    [Header("Play&Stop Buttons")]
+    public GameObject animBtnPlay;
+    public GameObject animBtnStop;
+    public Button playAudioBtn;
+    public Button pauseAudioBtn;
+
     public bool _load_downloded_bundle;
 
     // Use this for initialization
@@ -51,19 +54,24 @@ public class ScanSceneUIHandler : Singleton<ScanSceneUIHandler>
         backbtn.SetActive(true);
         errortext.text = Application.persistentDataPath.Contains("volume1").ToString();
 
+        CheckBundleAvailability();
+    }
+
+    private void CheckBundleAvailability(Action<string> OnComplete = null)
+    {
         if (!File.Exists(Application.persistentDataPath + "/" + "volume1"))
         {
             ProductScreen.SetActive(true);
             downloadimage.GetComponent<Image>().fillAmount = 1;
-            UI_Manager.changescr = UI_Manager.screenStates.productsList;
+            UI_Manager.Instance.changescr = screenStates.productsList;
             Debug.Log("StartScanFileNotExist");
         }
         else
         {
             ScanScreen.SetActive(true);
-            StartCoroutine(BundlerHander.Instance.LoadBundles());
+            StartCoroutine(AssetbundleManager.Instance.LoadBundles());
             _load_downloded_bundle = true;
-            UI_Manager.changescr = UI_Manager.screenStates.ScanScreen;
+            UI_Manager.Instance.changescr = screenStates.ScanScreen;
             Debug.Log("StartScanFileExist");
         }
     }
@@ -78,8 +86,6 @@ public class ScanSceneUIHandler : Singleton<ScanSceneUIHandler>
         }
     }
 
-
-
     public void Chapter1()
     {
         if (!File.Exists(Application.persistentDataPath + "/" + "volume1"))
@@ -87,17 +93,17 @@ public class ScanSceneUIHandler : Singleton<ScanSceneUIHandler>
             Screen.orientation = ScreenOrientation.Portrait;
             ActivationScreen.SetActive(true);
             downloadimage.GetComponent<Image>().fillAmount = 1;
-            UI_Manager.changescr = UI_Manager.screenStates.ActivationScreen;
-            Debug.Log("ChapterCalled");
+            UI_Manager.Instance.changescr = screenStates.ActivationScreen;
+            EventManager.Instance.DownloadAssetbundleInvoke();
         }
         else
         {
             Screen.orientation = ScreenOrientation.Landscape;
             ScanScreen.SetActive(true);
             ProductScreen.SetActive(false);
-            StartCoroutine(BundlerHander.Instance.LoadBundles());
+            StartCoroutine(AssetbundleManager.Instance.LoadBundles());
             downloadimage.GetComponent<Image>().fillAmount = 0;
-            UI_Manager.changescr = UI_Manager.screenStates.ScanScreen;
+            UI_Manager.Instance.changescr = screenStates.ScanScreen;
         }
     }
 
@@ -107,39 +113,39 @@ public class ScanSceneUIHandler : Singleton<ScanSceneUIHandler>
         Screen.orientation = ScreenOrientation.Landscape;
         ActivationScreen.SetActive(false);
         ProductScreen.gameObject.SetActive(true);
-        StartCoroutine(BundlerHander.Instance.AssetBundleDownload());
+        StartCoroutine(AssetbundleManager.Instance.AssetBundleDownload());
 
-        UI_Manager.changescr = UI_Manager.screenStates.downloading;
+        UI_Manager.Instance.changescr = screenStates.downloading;
     }
 
 
     public void Backbtn()
     {
-        switch (UI_Manager.changescr)
+        switch (UI_Manager.Instance.changescr)
         {
-            case UI_Manager.screenStates.ActivationScreen:
+            case screenStates.ActivationScreen:
 
                 ActivationScreen.SetActive(false);
                 ProductScreen.SetActive(true);
-                UI_Manager.changescr = UI_Manager.screenStates.productsList;
+                UI_Manager.Instance.changescr = screenStates.productsList;
                 break;
 
-            case UI_Manager.screenStates.downloading:
+            case screenStates.downloading:
                 //Print to wait
                 break;
 
-            case UI_Manager.screenStates.productsList:
+            case screenStates.productsList:
                 downloadimage.GetComponent<Image>().fillAmount = 0;
                 downloadingText.GetComponent<Text>().text = "";
                 SceneManager.LoadScene("DeltaAR");
                 UI_Manager.screenChange = "FromScan";
-                UI_Manager.changescr = UI_Manager.screenStates.menuscreen;
+                UI_Manager.Instance.changescr = screenStates.menuscreen;
                 break;
 
-            case UI_Manager.screenStates.ScanScreen:
+            case screenStates.ScanScreen:
                 ScanScreen.SetActive(false);
                 ProductScreen.SetActive(true);
-                UI_Manager.changescr = UI_Manager.screenStates.productsList;
+                UI_Manager.Instance.changescr = screenStates.productsList;
                 downloadimage.GetComponent<Image>().fillAmount = 0;
                 downloadingText.GetComponent<Text>().text = "";
                 break;
@@ -153,29 +159,7 @@ public class ScanSceneUIHandler : Singleton<ScanSceneUIHandler>
         ScanScreen.SetActive(false);
         ProductScreen.SetActive(true);
         backbtn.SetActive(true);
-        UI_Manager.changescr = UI_Manager.screenStates.menuscreen;
+        UI_Manager.Instance.changescr = screenStates.menuscreen;
     }
 
-    public bool audioplayenable;
-    public void AudioPlayPause()
-    {
-        if (!audioplayenable)
-        {
-            playAudioBtn.gameObject.SetActive(false);
-            pauseAudioBtn.gameObject.SetActive(true);
-            // GameObject.Find("ScanController").AddComponent<AudioSource>();
-            //GameObject.Find("ScanController").GetComponent<AudioSource>().clip = testClip;
-            //GameObject.Find("ScanController").GetComponent<AudioSource>().Play();
-            BundlerHander.Instance.ParentRef.GetComponentInChildren<AudioSource>().Pause();
-            audioplayenable = true;
-        }
-        else
-        {
-            pauseAudioBtn.gameObject.SetActive(false);
-            playAudioBtn.gameObject.SetActive(true);
-            //GameObject.Find("ScanController").GetComponent<AudioSource>().Pause();
-            BundlerHander.Instance.ParentRef.GetComponentInChildren<AudioSource>().Play();
-            audioplayenable = false;
-        }
-    }
 }
