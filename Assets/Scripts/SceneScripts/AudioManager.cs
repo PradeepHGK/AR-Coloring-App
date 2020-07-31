@@ -21,6 +21,12 @@ public class AudioManager : Singleton<AudioManager>
         EventManager.Instance.OnTrackingLost += OnTrackingLost;
     }
 
+
+    private void OnDisable() 
+    {
+        EventManager.Instance.PlayAudioFromBundle -= SetAudioClip;
+        EventManager.Instance.OnTrackingLost -= OnTrackingLost;
+    }
     private void OnTrackingLost()
     {
         audioplayenable = false;
@@ -29,22 +35,16 @@ public class AudioManager : Singleton<AudioManager>
         Debug.Log("AudioStopped");
     }
 
-    private void OnDisable() 
-    {
-        EventManager.Instance.PlayAudioFromBundle -= SetAudioClip;
-        EventManager.Instance.OnTrackingLost -= OnTrackingLost;
-    }
-
     private void SetAudioClip(AudioClip clip) 
     { 
         AudioSource.clip = clip;
-//#if UNITY_EDITOR
-//        AudioSource.loop = true;
-//        AudioSource.Play();
-//#endif
+        //#if UNITY_EDITOR
+        //        AudioSource.loop = true;
+        //        AudioSource.Play();
+        //#endif
     }
 
-    public void AudioPlayPause()
+    private void AudioPlayPause()
     {
         if (AudioSource.clip != null)
         {
@@ -62,5 +62,4 @@ public class AudioManager : Singleton<AudioManager>
             }
         }
     }
-
 }

@@ -135,6 +135,12 @@ public class ScanUIManager : Singleton<ScanUIManager>
                 break;
 
             case screenStates.productsList:
+                if (AssetbundleManager.Instance.DeltaAssetbundle != null)
+                {
+                    Debug.Log("BackBtn_BundleUnloaded");
+                    AssetbundleManager.Instance.DeltaAssetbundle.Unload(false);
+                }
+
                 downloadimage.GetComponent<Image>().fillAmount = 0;
                 downloadingText.GetComponent<Text>().text = "";
                 SceneManager.LoadScene("DeltaAR");

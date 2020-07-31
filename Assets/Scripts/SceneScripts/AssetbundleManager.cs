@@ -106,7 +106,6 @@ public class AssetbundleManager : Pixelplacement.Singleton<AssetbundleManager>
         }
 
         Debug.Log("File------" + File.Exists(Application.persistentDataPath + " / " + "volume1"));
-        Debug.Log("Assetbundle_bool: " + Application.persistentDataPath.Contains("volume1"));
 
         WWW loadBundles = WWW.LoadFromCacheOrDownload("file://" + Application.persistentDataPath + "/" + "volume1", 1);
         yield return loadBundles;
@@ -131,7 +130,6 @@ public class AssetbundleManager : Pixelplacement.Singleton<AssetbundleManager>
                 print("#" + assetName);
             }
         }
-
     }
 
     public void PlayAnimation()
