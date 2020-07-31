@@ -48,7 +48,22 @@ public class ScanUIManager : Singleton<ScanUIManager>
 
     public bool _load_downloded_bundle;
 
-    // Use this for initialization
+    private void OnEnable()
+    {
+        EventManager.Instance.OnTrackingFound += OnTrackingFound;
+        EventManager.Instance.OnTrackingLost += OnTrackingLost;
+    }
+
+    private void OnTrackingLost()
+    {
+        ScanScreen.SetActive(false);
+    }
+
+    private void OnTrackingFound(string arg1, GameObject arg2)
+    {
+        ScanScreen.SetActive(true);
+    }
+
     void Start()
     {
         backbtn.SetActive(true);
