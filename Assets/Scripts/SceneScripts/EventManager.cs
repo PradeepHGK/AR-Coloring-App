@@ -11,6 +11,13 @@ public class EventManager : Pixelplacement.Singleton<EventManager> {
         OnTrackingFound.Invoke(trackableName, trackableObject);
     }
 
+
+    public event Action OnTrackingLost;
+    public void OnTrackingLostInvoke()
+    {
+        OnTrackingLost.Invoke();
+    }
+
     public event Action DownloadAssetbundle;
     public void DownloadAssetbundleInvoke()
     {

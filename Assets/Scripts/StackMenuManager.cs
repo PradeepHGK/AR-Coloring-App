@@ -19,15 +19,10 @@ public class StackMenuManager : MonoBehaviour {
 	[Header("Boolean References")]
 	[SerializeField] private bool isControlEnabled;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+	void Awake()
+    {
+
+    }
 
 	public void OnClickSelectionButton()
 	{

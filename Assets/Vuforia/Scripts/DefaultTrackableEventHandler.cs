@@ -57,6 +57,7 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
         {
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " lost");
             OnTrackingLost();
+            EventManager.Instance.OnTrackingLostInvoke();
         }
         else
         {
@@ -64,6 +65,7 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
             // Vuforia is starting, but tracking has not been lost or found yet
             // Call OnTrackingLost() to hide the augmentations
             OnTrackingLost();
+            EventManager.Instance.OnTrackingLostInvoke();
         }
     }
 
@@ -88,9 +90,6 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
         // Enable canvas':
         foreach (var component in canvasComponents)
             component.enabled = true;
-
-        //BundlerHander.Instance.InstantiateModel(targetBehaviour.ImageTarget.Name);
-
     }
 
 
@@ -111,33 +110,6 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
         // Disable canvas':
         foreach (var component in canvasComponents)
             component.enabled = false;
-        /*
-        if (BundlerHander._assetBundleInstance.ParentRef != null)
-        {
-            Debug.Log("Parent_Ref________________");
-
-            if (BundlerHander._assetBundleInstance.ParentRef.GetComponent<AudioSource>() != null)
-            {
-                if (BundlerHander._assetBundleInstance.ParentRef.GetComponent<AudioSource>().isPlaying)
-                {
-                    BundlerHander._assetBundleInstance.ParentRef.GetComponent<AudioSource>().Stop();
-                }
-
-            }
-            else
-            {
-                Debug.Log("AudioSource_couldn't find");
-            }
-
-
-            if (BundlerHander._assetBundleInstance.ParentRef.transform.GetChild(0) != null)
-            {
-                Destroy(BundlerHander._assetBundleInstance.ParentRef.transform.GetChild(0).gameObject);
-            }
-
-
-        }
-        */
     }
 
     #endregion // PROTECTED_METHODS

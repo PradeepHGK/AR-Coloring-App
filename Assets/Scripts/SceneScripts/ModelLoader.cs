@@ -1,33 +1,52 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
 using UnityEngine.Collections;
 
-public class ModelLoader : Pixelplacement.Singleton<ModelLoader> 
+public class ModelLoader : Pixelplacement.Singleton<ModelLoader>
 {
+    public GameObject Model { get; private set; }
+
     private void OnEnable()
     {
         EventManager.Instance.OnTrackingFound += LoadModel_OnTrackingFound;
+        EventManager.Instance.OnTrackingLost += OnTrackingLost;
     }
+
 
     private void OnDisable()
     {
         EventManager.Instance.OnTrackingFound -= LoadModel_OnTrackingFound;
+        EventManager.Instance.OnTrackingLost -= OnTrackingLost;
+    }
+    private void OnTrackingLost()
+    {
+        if (Model != null)
+            Model.SetActive(false);
+        Debug.Log("ModelDisabled");
     }
 
-    private void LoadModel_OnTrackingFound(string trackableName, GameObject trakableObject)
+    private void LoadModel_OnTrackingFound(string trackableName, GameObject trackableObject)
     {
-        Debug.LogWarning("trackableName -->" + trackableName + "-------" + trakableObject.name);
-        AssetBundleRequest targetAssetBundleRequest1 = AssetbundleManager.Instance.DeltaAssetbundle.LoadAssetAsync(trackableName + ".fbx", typeof(GameObject));
-        GameObject ModelGameObject1 = targetAssetBundleRequest1.asset as GameObject;
-        GameObject Model = Instantiate(ModelGameObject1);
-        Model.transform.SetParent(trakableObject.transform);
-        AssignRC(trakableObject);
-        ApplyModelScaleRotation(Model);
+        Debug.LogWarning("trackableName -->" + trackableName + "------->" + trackableObject.name);
+        if (trackableObject.transform.childCount == 0)
+        {
+            AssetBundleRequest targetAssetBundleRequest1 = AssetbundleManager.Instance.DeltaAssetbundle.LoadAssetAsync(trackableName + ".fbx", typeof(GameObject));
+            GameObject ModelGameObject1 = targetAssetBundleRequest1.asset as GameObject;
+            Model = Instantiate(ModelGameObject1);
+            Model.transform.SetParent(trackableObject.transform);
+            AssignRC(trackableObject);
+            ApplyModelScaleRotation(Model);
 
-        if (AssetbundleManager.Instance.DeltaAssetbundle.LoadAsset<AudioClip>(trackableName + ".mp3") != null)
-            EventManager.Instance.PlayAudioInvoke(AssetbundleManager.Instance.DeltaAssetbundle.LoadAsset<AudioClip>(trackableName + ".mp3"));
+            if (AssetbundleManager.Instance.DeltaAssetbundle.LoadAsset<AudioClip>(trackableName + ".mp3") != null)
+                EventManager.Instance.PlayAudioInvoke(AssetbundleManager.Instance.DeltaAssetbundle.LoadAsset<AudioClip>(trackableName + ".mp3"));
+        }
+        else
+        {
+                Model.SetActive(true);
+        }
     }
 
     private void AssignRC(GameObject trackableObj)

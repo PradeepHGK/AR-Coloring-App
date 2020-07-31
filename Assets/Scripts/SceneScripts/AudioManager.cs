@@ -18,19 +18,37 @@ public class AudioManager : Singleton<AudioManager>
     private void OnEnable() 
     {
         EventManager.Instance.PlayAudioFromBundle += SetAudioClip;
+        EventManager.Instance.OnTrackingLost += OnTrackingLost;
+    }
+
+    private void OnTrackingLost()
+    {
+        audioplayenable = false;
+        if (AudioSource.clip != null)
+            AudioSource.Stop();
+        Debug.Log("AudioStopped");
     }
 
     private void OnDisable() 
     {
         EventManager.Instance.PlayAudioFromBundle -= SetAudioClip;
+        EventManager.Instance.OnTrackingLost -= OnTrackingLost;
     }
 
-    private void SetAudioClip(AudioClip clip) { AudioSource.clip = clip; }
+    private void SetAudioClip(AudioClip clip) 
+    { 
+        AudioSource.clip = clip;
+//#if UNITY_EDITOR
+//        AudioSource.loop = true;
+//        AudioSource.Play();
+//#endif
+    }
 
     public void AudioPlayPause()
     {
         if (AudioSource.clip != null)
         {
+            AudioSource.loop = true;
             audioplayenable = !audioplayenable;
             ScanUIManager.Instance.playAudioBtn.gameObject.SetActive(audioplayenable);
             ScanUIManager.Instance.pauseAudioBtn.gameObject.SetActive(!audioplayenable);

@@ -4,11 +4,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEditor.VersionControl;
 
 public class CreateAssetBundles
 {
-	[MenuItem("Assets/Build AssetBundles")]
+	private static AssetImporter assetImporter;
 
+	[MenuItem("Assets/Build AssetBundles")]
 	static void BuildAllAssetBundles()
 	{
 		string assetBundleDirectory = "Assets/Assetbundle/";
