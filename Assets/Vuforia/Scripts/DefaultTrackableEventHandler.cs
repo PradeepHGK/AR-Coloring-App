@@ -49,13 +49,14 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
             newStatus == TrackableBehaviour.Status.TRACKED ||
             newStatus == TrackableBehaviour.Status.EXTENDED_TRACKED)
         {
+            Debug.Log("ImageTargetBehaviour: " + this.gameObject.GetComponent<ImageTargetBehaviour>().TrackableName);
+            var trackableName = this.gameObject.GetComponent<ImageTargetBehaviour>().TrackableName;
             OnTrackingFound();
-            EventManager.Instance.OnTrackingFoundInvoke(mTrackableBehaviour.TrackableName, this.gameObject);
+            EventManager.Instance.OnTrackingFoundInvoke(trackableName, this.gameObject);
         }
         else if (previousStatus == TrackableBehaviour.Status.TRACKED &&
                  newStatus == TrackableBehaviour.Status.NOT_FOUND)
         {
-            Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " lost");
             OnTrackingLost();
             EventManager.Instance.OnTrackingLostInvoke();
         }

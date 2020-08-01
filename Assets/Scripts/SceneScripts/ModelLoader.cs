@@ -45,7 +45,8 @@ public class ModelLoader : Pixelplacement.Singleton<ModelLoader>
         }
         else
         {
-                Model.SetActive(true);
+            Debug.Log("Child Exist: " + trackableObject.transform.GetChild(0).gameObject.name);
+            trackableObject.transform.GetChild(0).gameObject.SetActive(true);
         }
     }
 
