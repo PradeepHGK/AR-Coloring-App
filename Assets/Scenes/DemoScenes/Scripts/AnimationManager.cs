@@ -1,14 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Pixelplacement;
 using UnityEngine;
-using System;
-using Vuforia;
 
-public class AnimationManager : MonoBehaviour
+public class AnimationManager : Singleton<AnimationManager>
 {
-    private Animator animator;
-    private GameObject TrackableObject;
-    private bool isAnimationSwapped;
+    [SerializeField] private GameObject TrackableObject;
+    [SerializeField] private bool isAnimationSwapped;
 
     void OnEnable()
     {
@@ -20,10 +16,7 @@ public class AnimationManager : MonoBehaviour
         EventManager.Instance.OnTrackingFound -= OnTrackingFound;
     }
 
-    private void OnTrackingFound(string trackableName, GameObject trackableObject)
-    {
-        TrackableObject = trackableObject;
-    }
+    private void OnTrackingFound(string trackableName, GameObject trackableObject)=> TrackableObject = trackableObject;
 
     void Start()
     {
