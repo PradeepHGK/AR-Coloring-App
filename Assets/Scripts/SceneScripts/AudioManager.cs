@@ -1,4 +1,5 @@
 ﻿using Pixelplacement;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,13 +12,14 @@ public class AudioManager : Singleton<AudioManager>
     void Awake()
     {
         AudioSource = GetComponent<AudioSource>();
-        ScanUIManager.Instance.playAudioBtn.onClick.AddListener(AudioPlayPause);
-        ScanUIManager.Instance.pauseAudioBtn.onClick.AddListener(AudioPlayPause);
+        //ScanUIManager.Instance.playAudioBtn.onClick.AddListener(AudioPlayPause);
+        //ScanUIManager.Instance.pauseAudioBtn.onClick.AddListener(AudioPlayPause);
     }
 
     private void OnEnable() 
     {
         EventManager.Instance.PlayAudioFromBundle += SetAudioClip;
+        EventManager.Instance.OnTrackingFound += OnTrackingFound;
         EventManager.Instance.OnTrackingLost += OnTrackingLost;
     }
 
@@ -25,14 +27,19 @@ public class AudioManager : Singleton<AudioManager>
     private void OnDisable() 
     {
         EventManager.Instance.PlayAudioFromBundle -= SetAudioClip;
+        EventManager.Instance.OnTrackingFound -= OnTrackingFound;
         EventManager.Instance.OnTrackingLost -= OnTrackingLost;
     }
+    private void OnTrackingFound(string arg1, GameObject arg2)
+    {
+        AudioPlayPause();
+    }
+
     private void OnTrackingLost()
     {
         audioplayenable = false;
         if (AudioSource.clip != null)
             AudioSource.Stop();
-        Debug.Log("AudioStopped");
     }
 
     private void SetAudioClip(AudioClip clip) 
@@ -50,16 +57,11 @@ public class AudioManager : Singleton<AudioManager>
         {
             AudioSource.loop = true;
             audioplayenable = !audioplayenable;
-            ScanUIManager.Instance.playAudioBtn.gameObject.SetActive(audioplayenable);
-            ScanUIManager.Instance.pauseAudioBtn.gameObject.SetActive(!audioplayenable);
+
             if (audioplayenable)
-            {
                 AudioSource.Play();
-            }
             else
-            {
                 AudioSource.Pause();
-            }
         }
     }
 }

@@ -43,8 +43,8 @@ public class ScanUIManager : Singleton<ScanUIManager>
     [Header("Play&Stop Buttons")]
     public GameObject animBtnPlay;
     public GameObject animBtnStop;
-    public Button playAudioBtn;
-    public Button pauseAudioBtn;
+    public Button AnimationPlayBtn;
+    public Button AnimationPauseBtn;
 
 
     private void OnEnable()
