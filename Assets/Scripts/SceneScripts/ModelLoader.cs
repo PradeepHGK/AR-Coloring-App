@@ -37,13 +37,14 @@ public class ModelLoader : Pixelplacement.Singleton<ModelLoader>
             AssignRC(trackableObject);
             ApplyModelScaleRotation(Model);
 
-            if (AssetbundleManager.Instance.DeltaAssetbundle.LoadAsset<AudioClip>(trackableName + ".mp3") != null)
-                EventManager.Instance.PlayAudioInvoke(AssetbundleManager.Instance.DeltaAssetbundle.LoadAsset<AudioClip>(trackableName + ".mp3"));
         }
         else
         {
             trackableObject.transform.GetChild(0).gameObject.SetActive(true);
         }
+
+        if (AssetbundleManager.Instance.DeltaAssetbundle.LoadAsset<AudioClip>(trackableName + ".mp3") != null)
+            EventManager.Instance.PlayAudioInvoke(AssetbundleManager.Instance.DeltaAssetbundle.LoadAsset<AudioClip>(trackableName + ".mp3"));
     }
 
     private void AssignRC(GameObject trackableObj)

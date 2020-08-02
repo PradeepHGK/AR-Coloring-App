@@ -1659,6 +1659,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 152cef8e06d1c174b830aa082f33e1f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _dontDestroyOnLoad: 0
+  TrackableObject: {fileID: 0}
+  isAnimationSwapped: 0
 --- !u!1 &506549978
 GameObject:
   m_ObjectHideFlags: 0
@@ -5776,8 +5779,8 @@ MonoBehaviour:
   errortext: {fileID: 1680062112}
   animBtnPlay: {fileID: 0}
   animBtnStop: {fileID: 0}
-  AnimationPlayBtn: {fileID: 0}
-  AnimationPauseBtn: {fileID: 0}
+  AnimationPlayBtn: {fileID: 2015457599}
+  AnimationPauseBtn: {fileID: 366107093}
 --- !u!4 &1780780680
 Transform:
   m_ObjectHideFlags: 0
