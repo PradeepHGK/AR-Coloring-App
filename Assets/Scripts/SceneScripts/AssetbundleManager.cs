@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using System.IO;
 using UnityEngine.UI;
+using System;
 
 public class AssetbundleManager : Pixelplacement.Singleton<AssetbundleManager>
 {
@@ -31,7 +32,7 @@ public class AssetbundleManager : Pixelplacement.Singleton<AssetbundleManager>
 
     private void DownloadAssetbundle()
     {
-        StartCoroutine(AssetBundleDownload());
+        StartCoroutine(AssetBundleDownload(delegate () { Debug.Log("LoadBundles"); ScanUIManager.Instance.OnClickChapters(); }));
     }
 
 
@@ -41,21 +42,20 @@ public class AssetbundleManager : Pixelplacement.Singleton<AssetbundleManager>
         Caching.ClearCache();
     }
 
-    public IEnumerator AssetBundleDownload()
+    public IEnumerator AssetBundleDownload(Action OnComplete)
     {
         bool isDownloadInterrupted = false;
         string fbxFile = Application.persistentDataPath + "/" + "volume1";
 
         www = new WWW(bundleurl);
-        ScanUIManager.Instance.DownloadingText.GetComponent<Text>().text = "Download please wait..";
+        ScanUIManager.Instance.DownloadingText.GetComponent<Text>().text = "Downloading please wait..";
         while (!www.isDone && www.error == null)
         {
 
 #if UNITY_EDITOR
             Debug.Log(www.progress * 100);
 #endif
-            //PlayerPrefs.SetString("AssetBundle", "Download");
-            ScanUIManager.Instance.DownloadImage.GetComponent<Image>().fillAmount -= www.progress / 10 * Time.deltaTime;
+            ScanUIManager.Instance.DownloadImage.GetComponent<Image>().fillAmount -= www.progress / 100 * Time.deltaTime;
             if (ScanUIManager.Instance.DownloadImage.GetComponent<Image>().fillAmount == 0)
             {
                 //ScanUIManager.Instance.DownloadImage.GetComponent<Text>().text = "Processing please wait...";
@@ -74,6 +74,7 @@ public class AssetbundleManager : Pixelplacement.Singleton<AssetbundleManager>
             if (isDownloadInterrupted)
             {
                 print("Connection Error.... Retrying Download");
+                StartCoroutine(AssetBundleDownload(delegate () { Debug.Log("NetworkInteruppted"); ScanUIManager.Instance.OnClickChapters(); }));
             }
             else
             {
@@ -87,8 +88,7 @@ public class AssetbundleManager : Pixelplacement.Singleton<AssetbundleManager>
             FileStream stream = new FileStream(fbxFile, FileMode.Create);
             stream.Write(www.bytes, 0, www.bytes.Length);
             stream.Close();
-
-            ScanUIManager.Instance.DownloadingText.GetComponent<Text>().text = "Please click Chapter 1";
+            OnComplete.Invoke();
         }
     }
 
@@ -120,14 +120,14 @@ public class AssetbundleManager : Pixelplacement.Singleton<AssetbundleManager>
 
         if (loadBundles.error != null)
         {
-            print("Error: " + loadBundles.error);
+            Debug.Log("Error: " + loadBundles.error);
         }
         else
         {
             assetbundle = loadBundles.assetBundle;
             foreach (string assetName in assetbundle.GetAllAssetNames())
             {
-                print("#" + assetName);
+                Debug.Log("#" + assetName);
             }
         }
     }

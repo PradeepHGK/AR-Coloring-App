@@ -2289,6 +2289,7 @@ GameObject:
   - component: {fileID: 691044146}
   - component: {fileID: 691044145}
   - component: {fileID: 691044147}
+  - component: {fileID: 691044148}
   m_Layer: 0
   m_Name: BackButton
   m_TagString: Untagged
@@ -2399,6 +2400,20 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &691044148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 691044143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0.41176468, g: 0.41176468, b: 0.41176468, a: 0.5}
+  m_EffectDistance: {x: 3, y: -3}
+  m_UseGraphicAlpha: 1
 --- !u!1 &798109352
 GameObject:
   m_ObjectHideFlags: 0
@@ -2557,6 +2572,7 @@ GameObject:
   - component: {fileID: 811056574}
   - component: {fileID: 811056576}
   - component: {fileID: 811056575}
+  - component: {fileID: 811056577}
   m_Layer: 0
   m_Name: Logo
   m_TagString: Untagged
@@ -2615,6 +2631,20 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 811056573}
+--- !u!114 &811056577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 811056573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0.41176468, g: 0.41176468, b: 0.41176468, a: 0.5}
+  m_EffectDistance: {x: 3, y: -3}
+  m_UseGraphicAlpha: 1
 --- !u!21 &887665062
 Material:
   serializedVersion: 6
@@ -5708,7 +5738,6 @@ MonoBehaviour:
   animBtnStop: {fileID: 0}
   playAudioBtn: {fileID: 2015457599}
   pauseAudioBtn: {fileID: 366107093}
-  _load_downloded_bundle: 0
 --- !u!4 &1780780680
 Transform:
   m_ObjectHideFlags: 0
@@ -6260,7 +6289,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1780780679}
-        m_MethodName: Chapter1
+        m_MethodName: OnClickChapters
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

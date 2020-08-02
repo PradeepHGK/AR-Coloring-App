@@ -19,11 +19,6 @@ public class StackMenuManager : MonoBehaviour {
 	[Header("Boolean References")]
 	[SerializeField] private bool isControlEnabled;
 
-	void Awake()
-    {
-
-    }
-
 	public void OnClickSelectionButton()
 	{
 		isControlEnabled = !isControlEnabled;

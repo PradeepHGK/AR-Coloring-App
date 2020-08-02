@@ -46,7 +46,6 @@ public class ScanUIManager : Singleton<ScanUIManager>
     public Button playAudioBtn;
     public Button pauseAudioBtn;
 
-    public bool _load_downloded_bundle;
 
     private void OnEnable()
     {
@@ -68,7 +67,6 @@ public class ScanUIManager : Singleton<ScanUIManager>
     {
         backbtn.SetActive(true);
         errortext.text = Application.persistentDataPath.Contains("volume1").ToString();
-
         CheckBundleAvailability();
     }
 
@@ -85,7 +83,6 @@ public class ScanUIManager : Singleton<ScanUIManager>
         {
             ScanScreen.SetActive(true);
             StartCoroutine(AssetbundleManager.Instance.LoadBundles());
-            _load_downloded_bundle = true;
             UI_Manager.Instance.changescr = screenStates.ScanScreen;
             Debug.Log("StartScanFileExist");
         }
@@ -101,11 +98,11 @@ public class ScanUIManager : Singleton<ScanUIManager>
         }
     }
 
-    public void Chapter1()
+    public void OnClickChapters()
     {
         if (!File.Exists(Application.persistentDataPath + "/" + "volume1"))
         {
-            Screen.orientation = ScreenOrientation.Portrait;
+            Screen.orientation = ScreenOrientation.Landscape;
             ActivationScreen.SetActive(true);
             downloadimage.GetComponent<Image>().fillAmount = 1;
             UI_Manager.Instance.changescr = screenStates.ActivationScreen;
@@ -113,6 +110,7 @@ public class ScanUIManager : Singleton<ScanUIManager>
         }
         else
         {
+            Debug.Log("BundleLoaded");
             Screen.orientation = ScreenOrientation.Landscape;
             ScanScreen.SetActive(true);
             ProductScreen.SetActive(false);
@@ -128,7 +126,7 @@ public class ScanUIManager : Singleton<ScanUIManager>
         Screen.orientation = ScreenOrientation.Landscape;
         ActivationScreen.SetActive(false);
         ProductScreen.gameObject.SetActive(true);
-        StartCoroutine(AssetbundleManager.Instance.AssetBundleDownload());
+        StartCoroutine(AssetbundleManager.Instance.AssetBundleDownload(delegate() { }));
 
         UI_Manager.Instance.changescr = screenStates.downloading;
     }

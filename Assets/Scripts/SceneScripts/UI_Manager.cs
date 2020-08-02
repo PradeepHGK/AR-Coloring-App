@@ -6,7 +6,6 @@ using SwipeMenu;
 
 public class UI_Manager : Pixelplacement.Singleton<UI_Manager>
 {
-
     public static string screenChange;
     public screenStates changescr;
     public Text DownloadText = null;
@@ -17,21 +16,17 @@ public class UI_Manager : Pixelplacement.Singleton<UI_Manager>
 
     [SerializeField] private float waitTime = 2.0f;
     public bool coolingDown = true;
-
     public Text loadingpercent;
-
     private AssetBundle assetbundle;
 
     void Start()
     {
         progrssbar.GetComponent<Image>().fillAmount = 0f;
-        //StartCoroutine(CallSplash());
         splashscreen.gameObject.SetActive(true);
         menuScreen.gameObject.SetActive(false);
 
         if (screenChange == "FromScan")
         {
-            //hidesplash();
             coolingDown = false;
             splashscreen.SetActive(false);
             menuScreen.SetActive(true);
@@ -52,11 +47,10 @@ public class UI_Manager : Pixelplacement.Singleton<UI_Manager>
 
     public void tryDemo()
     {
-        StartCoroutine(callTryDemo());
+        StartCoroutine(OnClickTryDemo());
     }
 
-    //call try demo
-    public IEnumerator callTryDemo()
+    public IEnumerator OnClickTryDemo()
     {
         changescr = screenStates.ScanScreen;
         yield return null;
@@ -86,7 +80,6 @@ public class UI_Manager : Pixelplacement.Singleton<UI_Manager>
         menuScreen.gameObject.SetActive(true);
         changescr = screenStates.signin;
     }
-
     public void Products()
     {
         SceneManager.LoadScene("ScanScene");
@@ -114,7 +107,6 @@ public class UI_Manager : Pixelplacement.Singleton<UI_Manager>
     // Update is called once per frame
     void Update()
     {
-        //Fill Amount 
         if (coolingDown == true)
         {
             progrssbar.GetComponent<Image>().fillAmount += 0.4f / waitTime * Time.deltaTime;
@@ -122,10 +114,7 @@ public class UI_Manager : Pixelplacement.Singleton<UI_Manager>
             if (progrssbar.GetComponent<Image>().fillAmount == 1.0f)
             {
                 Screen.orientation = ScreenOrientation.Portrait;
-
                 signScreen.SetActive(true);
-                //HideSplash();
-                //Here we need to call login screen
                 coolingDown = false;
             }
         }
@@ -137,12 +126,10 @@ public class UI_Manager : Pixelplacement.Singleton<UI_Manager>
             {
                 case screenStates.menuscreen:
                     changescr = screenStates.AppQuit;
-                    Debug.Log("FirstTimePressed");
                     break;
 
                 case screenStates.AppQuit:
                     Application.Quit();
-                    Debug.Log("AppQuit");
                     break;
             }
         }
@@ -162,7 +149,7 @@ public enum screenStates
     helpvideo,
     feedback,
     AppQuit
-};
+}
 
 
 
