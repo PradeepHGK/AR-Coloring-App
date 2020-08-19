@@ -30,7 +30,7 @@ public class ModelLoader : Pixelplacement.Singleton<ModelLoader>
     {
         if (trackableObject.transform.childCount == 0)
         {
-            AssetBundleRequest targetAssetBundleRequest1 = AssetbundleManager.Instance.DeltaAssetbundle.LoadAssetAsync(trackableName + ".fbx", typeof(GameObject));
+            AssetBundleRequest targetAssetBundleRequest1 = AssetbundleManager.Instance.DeltaAssetbundle.LoadAssetAsync(trackableName + ".prefab", typeof(GameObject));
             GameObject ModelGameObject1 = targetAssetBundleRequest1.asset as GameObject;
             Model = Instantiate(ModelGameObject1);
             Model.transform.SetParent(trackableObject.transform);
@@ -42,7 +42,9 @@ public class ModelLoader : Pixelplacement.Singleton<ModelLoader>
         else
         {
             trackableObject.transform.GetChild(0).gameObject.SetActive(true);
-            EventManager.Instance.PlayAudioInvoke(AssetbundleManager.Instance.DeltaAssetbundle.LoadAsset<AudioClip>(trackableName + ".mp3"));
+            var audioClip = AssetbundleManager.Instance.DeltaAssetbundle.LoadAsset<AudioClip>(trackableName + ".mp3");
+            Debug.Log($"SecondTimeAudio: {audioClip.name}");
+            EventManager.Instance.PlayAudioInvoke(audioClip);
         }
 
     }

@@ -41,8 +41,8 @@ public class ScanUIManager : Singleton<ScanUIManager>
     public Text errortext;
 
     [Header("Play&Stop Buttons")]
-    public GameObject animBtnPlay;
-    public GameObject animBtnStop;
+    public Button AudioPlayBtn;
+    public Button AudioMuteBtn;
     public Button AnimationPlayBtn;
     public Button AnimationPauseBtn;
 

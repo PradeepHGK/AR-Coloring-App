@@ -1,4 +1,5 @@
 ﻿using Pixelplacement;
+using System;
 using UnityEngine;
 
 public class AnimationManager : Singleton<AnimationManager>
@@ -9,7 +10,9 @@ public class AnimationManager : Singleton<AnimationManager>
     void OnEnable()
     {
         EventManager.Instance.OnTrackingFound += OnTrackingFound;
+        EventManager.Instance.OnTrackingLost += OnTrackingLost;
     }
+
 
     void OnDisable()
     {
@@ -17,6 +20,13 @@ public class AnimationManager : Singleton<AnimationManager>
     }
 
     private void OnTrackingFound(string trackableName, GameObject trackableObject) => TrackableObject = trackableObject;
+    
+    private void OnTrackingLost()
+    {
+        isAnimationSwapped = false;
+        ScanUIManager.Instance.AnimationPlayBtn.gameObject.SetActive(true);
+        ScanUIManager.Instance.AnimationPauseBtn.gameObject.SetActive(false);
+    }
 
     void Start()
     {
@@ -27,16 +37,15 @@ public class AnimationManager : Singleton<AnimationManager>
     private void PlayActionAnimation()
     {
         isAnimationSwapped = !isAnimationSwapped;
-        ScanUIManager.Instance.AnimationPlayBtn.gameObject.SetActive(isAnimationSwapped);
-        ScanUIManager.Instance.AnimationPauseBtn.gameObject.SetActive(!isAnimationSwapped);
+        ScanUIManager.Instance.AnimationPlayBtn.gameObject.SetActive(!isAnimationSwapped);
+        ScanUIManager.Instance.AnimationPauseBtn.gameObject.SetActive(isAnimationSwapped);
+
         if (isAnimationSwapped)
         {
-            Debug.Log("ActionPlaying");
             TrackableObject.transform.GetChild(0).GetComponent<Animator>().SetBool("Action", true);
         }
         else
         {
-            Debug.Log("ActionStopped");
             TrackableObject.transform.GetChild(0).GetComponent<Animator>().SetBool("Action", false);
         }
     }

@@ -7,14 +7,16 @@ using UnityEngine;
 public class AudioManager : Singleton<AudioManager>
 {
     [SerializeField] private AudioSource AudioSource;
-    [SerializeField] private bool audioplayenable;
+    [SerializeField] private bool _audioplayenable = false;
 
     void Awake()
     {
         AudioSource = GetComponent<AudioSource>();
-        //ScanUIManager.Instance.playAudioBtn.onClick.AddListener(AudioPlayPause);
-        //ScanUIManager.Instance.pauseAudioBtn.onClick.AddListener(AudioPlayPause);
+        AudioSource.loop = true;
+        ScanUIManager.Instance.AudioPlayBtn.onClick.AddListener(AudioPlayPause);
+        ScanUIManager.Instance.AudioMuteBtn.onClick.AddListener(AudioPlayPause);
     }
+
 
     private void OnEnable()
     {
@@ -35,7 +37,30 @@ public class AudioManager : Singleton<AudioManager>
         AudioSource.clip = clip;
         Debug.Log($"ClipName: {clip.name}");
     }
+
+
+
     private void OnTrackingFound(string arg1, GameObject arg2) => AudioSource.Play();
 
-    private void OnTrackingLost()=> AudioSource.Pause();
+    private void OnTrackingLost()
+    {
+        ScanUIManager.Instance.AudioPlayBtn.gameObject.SetActive(true);
+        ScanUIManager.Instance.AudioMuteBtn.gameObject.SetActive(false);
+        AudioSource.Pause();
+    }
+
+    private void AudioPlayPause()
+    {
+        _audioplayenable = !_audioplayenable;
+        ScanUIManager.Instance.AudioPlayBtn.gameObject.SetActive(_audioplayenable);
+        ScanUIManager.Instance.AudioMuteBtn.gameObject.SetActive(!_audioplayenable);
+        if (_audioplayenable)
+        {
+            AudioSource.Play();
+        }
+        else
+        {
+            AudioSource.Pause();
+        }
+    }
 }

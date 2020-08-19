@@ -73,33 +73,13 @@ public class UI_Manager : Pixelplacement.Singleton<UI_Manager>
 
     public IEnumerator OnClickTryDemo()
     {
-        Debug.Log($"GetActiveScene1: {SceneManager.GetActiveScene().name}");
         changescr = screenStates.ScanScreen;
         SceneManager.LoadScene("ScanScene");
-        yield return new WaitForSeconds(2);
-        Debug.Log($"GetActiveScene2: {SceneManager.GetActiveScene().name}");
-
-        /*        
-                AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("ScanScene");
-                asyncOperation.allowSceneActivation = false;
-                Debug.Log("Pro :" + asyncOperation.progress);
-                while (!asyncOperation.isDone)
-                {
-                    loadingpercent.text = "Loading progress: " + (asyncOperation.progress * 100) + "%";
-                    if (asyncOperation.progress >= 0.9f)
-                    {
-                        loadingpercent.text = "SceneLoading";
-                        asyncOperation.allowSceneActivation = true;
-                        SceneManager.LoadScene("ScanScene");
-                    }
-                    yield return null;
-                }*/
-    }
+        yield return new WaitForSeconds(2);    }
 
     public void Login()
     {
         Screen.orientation = ScreenOrientation.Landscape;
-
         signScreen.SetActive(false);
         splashscreen.SetActive(false);
         menuScreen.gameObject.SetActive(true);
