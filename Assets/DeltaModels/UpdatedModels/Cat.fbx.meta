@@ -1,48 +1,48 @@
 fileFormatVersion: 2
-guid: defd55ec76e8e8e4a9da97eb46deb0cd
+guid: 8cbb0fd95d56a624198db709632435b8
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
-    100000: Cat
-    100002: Head
-    100004: Head_End 1
-    100006: Head_End_1
-    100008: Hips
-    100010: Jaw
-    100012: Jaw_Base
-    100014: L_Ear
-    100016: L_Ear 1
-    100018: L_Ear 2
-    100020: L_Ear 3
-    100022: L_Ear_1
-    100024: L_Ear_2
-    100026: L_Ear_3
-    100028: LeftArm
-    100030: LeftFingerBase
-    100032: LeftFoot
-    100034: LeftFootIndex1
-    100036: LeftForeArm
-    100038: LeftHand
-    100040: LeftHandIndex1
-    100042: LeftLeg
-    100044: LeftShoulder
-    100046: LeftToeBase
-    100048: LeftUpLeg
-    100050: Neck
-    100052: Neck1
-    100054: Neck2
-    100056: Neck3
-    100058: Neck4
-    100060: //RootNode
-    100062: Path
-    100064: R_Ear
-    100066: R_Ear 1
-    100068: R_Ear 2
-    100070: R_Ear 3
-    100072: R_Ear_1
-    100074: R_Ear_2
-    100076: R_Ear_3
-    100078: Rig
+    100000: //RootNode
+    100002: Cat
+    100004: Cat_Path
+    100006: Cat_Rig
+    100008: Head
+    100010: Head_End 1
+    100012: Head_End_1
+    100014: Hips
+    100016: Jaw
+    100018: Jaw_Base
+    100020: L_Ear
+    100022: L_Ear 1
+    100024: L_Ear 2
+    100026: L_Ear 3
+    100028: L_Ear_1
+    100030: L_Ear_2
+    100032: L_Ear_3
+    100034: LeftArm
+    100036: LeftFingerBase
+    100038: LeftFoot
+    100040: LeftFootIndex1
+    100042: LeftForeArm
+    100044: LeftHand
+    100046: LeftHandIndex1
+    100048: LeftLeg
+    100050: LeftShoulder
+    100052: LeftToeBase
+    100054: LeftUpLeg
+    100056: Neck
+    100058: Neck1
+    100060: Neck2
+    100062: Neck3
+    100064: Neck4
+    100066: R_Ear
+    100068: R_Ear 1
+    100070: R_Ear 2
+    100072: R_Ear 3
+    100074: R_Ear_1
+    100076: R_Ear_2
+    100078: R_Ear_3
     100080: RightArm
     100082: RightFingerBase
     100084: RightFoot
@@ -68,46 +68,46 @@ ModelImporter:
     100124: Tail4
     100126: Tail5
     100128: Tail6
-    400000: Cat
-    400002: Head
-    400004: Head_End 1
-    400006: Head_End_1
-    400008: Hips
-    400010: Jaw
-    400012: Jaw_Base
-    400014: L_Ear
-    400016: L_Ear 1
-    400018: L_Ear 2
-    400020: L_Ear 3
-    400022: L_Ear_1
-    400024: L_Ear_2
-    400026: L_Ear_3
-    400028: LeftArm
-    400030: LeftFingerBase
-    400032: LeftFoot
-    400034: LeftFootIndex1
-    400036: LeftForeArm
-    400038: LeftHand
-    400040: LeftHandIndex1
-    400042: LeftLeg
-    400044: LeftShoulder
-    400046: LeftToeBase
-    400048: LeftUpLeg
-    400050: Neck
-    400052: Neck1
-    400054: Neck2
-    400056: Neck3
-    400058: Neck4
-    400060: //RootNode
-    400062: Path
-    400064: R_Ear
-    400066: R_Ear 1
-    400068: R_Ear 2
-    400070: R_Ear 3
-    400072: R_Ear_1
-    400074: R_Ear_2
-    400076: R_Ear_3
-    400078: Rig
+    400000: //RootNode
+    400002: Cat
+    400004: Cat_Path
+    400006: Cat_Rig
+    400008: Head
+    400010: Head_End 1
+    400012: Head_End_1
+    400014: Hips
+    400016: Jaw
+    400018: Jaw_Base
+    400020: L_Ear
+    400022: L_Ear 1
+    400024: L_Ear 2
+    400026: L_Ear 3
+    400028: L_Ear_1
+    400030: L_Ear_2
+    400032: L_Ear_3
+    400034: LeftArm
+    400036: LeftFingerBase
+    400038: LeftFoot
+    400040: LeftFootIndex1
+    400042: LeftForeArm
+    400044: LeftHand
+    400046: LeftHandIndex1
+    400048: LeftLeg
+    400050: LeftShoulder
+    400052: LeftToeBase
+    400054: LeftUpLeg
+    400056: Neck
+    400058: Neck1
+    400060: Neck2
+    400062: Neck3
+    400064: Neck4
+    400066: R_Ear
+    400068: R_Ear 1
+    400070: R_Ear 2
+    400072: R_Ear 3
+    400074: R_Ear_1
+    400076: R_Ear_2
+    400078: R_Ear_3
     400080: RightArm
     400082: RightFingerBase
     400084: RightFoot
@@ -133,11 +133,12 @@ ModelImporter:
     400124: Tail4
     400126: Tail5
     400128: Tail6
-    2100000: lambert2
+    2100000: Cat_Tex_Mat
     4300000: Cat
-    7400000: Take 001
+    7400000: Cat
+    7400002: Normal
+    7400004: Action
     9500000: //RootNode
-    11100000: //RootNode
     13700000: Cat
   externalObjects: {}
   materials:
@@ -162,10 +163,94 @@ ModelImporter:
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
-    animationWrapMode: 2
+    animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Cat
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 300
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Normal
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 73
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Action
+      takeName: Take 001
+      firstFrame: 74
+      lastFrame: 300
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
@@ -210,12 +295,12 @@ ModelImporter:
     rootMotionBoneName: 
     rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
-    hasExtraRoot: 1
+    hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 1
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
-  assetBundleName: volume1
+  assetBundleName: 
   assetBundleVariant: 

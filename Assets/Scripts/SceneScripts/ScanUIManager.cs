@@ -53,14 +53,17 @@ public class ScanUIManager : Singleton<ScanUIManager>
         EventManager.Instance.OnTrackingLost += OnTrackingLost;
     }
 
-    private void OnTrackingLost()
-    {
-        ScanScreen.SetActive(false);
-    }
 
     private void OnTrackingFound(string arg1, GameObject arg2)
     {
-        ScanScreen.SetActive(true);
+        ScanScreen.gameObject.SetActive(true);
+        Debug.Log("ScanScene OntrackingFound");
+    }
+
+    private void OnTrackingLost()
+    {
+        ScanScreen.gameObject.SetActive(false);
+        Debug.Log("ScanScene OntrackingLost");
     }
 
     void Start()
@@ -88,14 +91,11 @@ public class ScanUIManager : Singleton<ScanUIManager>
         }
     }
 
-
     // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
-        {
             Backbtn();
-        }
     }
 
     public void OnClickChapters()
@@ -121,12 +121,12 @@ public class ScanUIManager : Singleton<ScanUIManager>
     }
 
 
-    public void ClickActivation()
+    public void OnClickActivation()
     {
         Screen.orientation = ScreenOrientation.Landscape;
         ActivationScreen.SetActive(false);
         ProductScreen.gameObject.SetActive(true);
-        StartCoroutine(AssetbundleManager.Instance.AssetBundleDownload(delegate() { }));
+        StartCoroutine(AssetbundleManager.Instance.AssetBundleDownload(delegate () { }));
 
         UI_Manager.Instance.changescr = screenStates.downloading;
     }
@@ -137,7 +137,6 @@ public class ScanUIManager : Singleton<ScanUIManager>
         switch (UI_Manager.Instance.changescr)
         {
             case screenStates.ActivationScreen:
-
                 ActivationScreen.SetActive(false);
                 ProductScreen.SetActive(true);
                 UI_Manager.Instance.changescr = screenStates.productsList;
@@ -150,7 +149,6 @@ public class ScanUIManager : Singleton<ScanUIManager>
             case screenStates.productsList:
                 if (AssetbundleManager.Instance.DeltaAssetbundle != null)
                 {
-                    Debug.Log("BackBtn_BundleUnloaded");
                     AssetbundleManager.Instance.DeltaAssetbundle.Unload(false);
                 }
 
@@ -162,7 +160,7 @@ public class ScanUIManager : Singleton<ScanUIManager>
                 break;
 
             case screenStates.ScanScreen:
-                ScanScreen.SetActive(false);
+                //ScanScreen.SetActive(false);
                 ProductScreen.SetActive(true);
                 UI_Manager.Instance.changescr = screenStates.productsList;
                 downloadimage.GetComponent<Image>().fillAmount = 0;
@@ -180,5 +178,4 @@ public class ScanUIManager : Singleton<ScanUIManager>
         backbtn.SetActive(true);
         UI_Manager.Instance.changescr = screenStates.menuscreen;
     }
-
 }

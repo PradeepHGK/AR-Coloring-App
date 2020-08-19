@@ -1,76 +1,76 @@
 fileFormatVersion: 2
-guid: 81bdc7e68cc34c44f9281bd7f408252a
+guid: 3fdfcc8dad8965448ab6334ec7604dea
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
-    100000: detachedCurve1
-    100002: locator1
-    100004: //RootNode
-    100006: SHEEP
-    100008: SHEEP_
-    100010: SHEEP_ Head
-    100012: SHEEP_ L Calf
-    100014: SHEEP_ L Clavicle
-    100016: SHEEP_ L Finger0
-    100018: SHEEP_ L Foot
-    100020: SHEEP_ L Forearm
-    100022: SHEEP_ L Hand
-    100024: SHEEP_ L HorseLink
-    100026: SHEEP_ L Thigh
-    100028: SHEEP_ L UpperArm
-    100030: SHEEP_ Neck
-    100032: SHEEP_ Neck1
-    100034: SHEEP_ Neck2
-    100036: SHEEP_ Pelvis
-    100038: SHEEP_ Queue de cheval 1
-    100040: SHEEP_ R Calf
-    100042: SHEEP_ R Clavicle
-    100044: SHEEP_ R Finger0
-    100046: SHEEP_ R Foot
-    100048: SHEEP_ R Forearm
-    100050: SHEEP_ R Hand
-    100052: SHEEP_ R HorseLink
-    100054: SHEEP_ R Thigh
-    100056: SHEEP_ R UpperArm
-    100058: SHEEP_ Spine
-    100060: SHEEP_ Spine1
-    400000: detachedCurve1
-    400002: locator1
-    400004: //RootNode
-    400006: SHEEP
-    400008: SHEEP_
-    400010: SHEEP_ Head
-    400012: SHEEP_ L Calf
-    400014: SHEEP_ L Clavicle
-    400016: SHEEP_ L Finger0
-    400018: SHEEP_ L Foot
-    400020: SHEEP_ L Forearm
-    400022: SHEEP_ L Hand
-    400024: SHEEP_ L HorseLink
-    400026: SHEEP_ L Thigh
-    400028: SHEEP_ L UpperArm
-    400030: SHEEP_ Neck
-    400032: SHEEP_ Neck1
-    400034: SHEEP_ Neck2
-    400036: SHEEP_ Pelvis
-    400038: SHEEP_ Queue de cheval 1
-    400040: SHEEP_ R Calf
-    400042: SHEEP_ R Clavicle
-    400044: SHEEP_ R Finger0
-    400046: SHEEP_ R Foot
-    400048: SHEEP_ R Forearm
-    400050: SHEEP_ R Hand
-    400052: SHEEP_ R HorseLink
-    400054: SHEEP_ R Thigh
-    400056: SHEEP_ R UpperArm
-    400058: SHEEP_ Spine
-    400060: SHEEP_ Spine1
-    2100000: lambert3
-    4300000: SHEEP
-    7400000: Take 001
+    100000: //RootNode
+    100002: Sheep
+    100004: SHEEP_
+    100006: SHEEP_ Head
+    100008: SHEEP_ L Calf
+    100010: SHEEP_ L Clavicle
+    100012: SHEEP_ L Finger0
+    100014: SHEEP_ L Foot
+    100016: SHEEP_ L Forearm
+    100018: SHEEP_ L Hand
+    100020: SHEEP_ L HorseLink
+    100022: SHEEP_ L Thigh
+    100024: SHEEP_ L UpperArm
+    100026: SHEEP_ Neck
+    100028: SHEEP_ Neck1
+    100030: SHEEP_ Neck2
+    100032: SHEEP_ Pelvis
+    100034: SHEEP_ Queue de cheval 1
+    100036: SHEEP_ R Calf
+    100038: SHEEP_ R Clavicle
+    100040: SHEEP_ R Finger0
+    100042: SHEEP_ R Foot
+    100044: SHEEP_ R Forearm
+    100046: SHEEP_ R Hand
+    100048: SHEEP_ R HorseLink
+    100050: SHEEP_ R Thigh
+    100052: SHEEP_ R UpperArm
+    100054: SHEEP_ Spine
+    100056: SHEEP_ Spine1
+    100058: Sheep_Path
+    100060: Sheep_Rig
+    400000: //RootNode
+    400002: Sheep
+    400004: SHEEP_
+    400006: SHEEP_ Head
+    400008: SHEEP_ L Calf
+    400010: SHEEP_ L Clavicle
+    400012: SHEEP_ L Finger0
+    400014: SHEEP_ L Foot
+    400016: SHEEP_ L Forearm
+    400018: SHEEP_ L Hand
+    400020: SHEEP_ L HorseLink
+    400022: SHEEP_ L Thigh
+    400024: SHEEP_ L UpperArm
+    400026: SHEEP_ Neck
+    400028: SHEEP_ Neck1
+    400030: SHEEP_ Neck2
+    400032: SHEEP_ Pelvis
+    400034: SHEEP_ Queue de cheval 1
+    400036: SHEEP_ R Calf
+    400038: SHEEP_ R Clavicle
+    400040: SHEEP_ R Finger0
+    400042: SHEEP_ R Foot
+    400044: SHEEP_ R Forearm
+    400046: SHEEP_ R Hand
+    400048: SHEEP_ R HorseLink
+    400050: SHEEP_ R Thigh
+    400052: SHEEP_ R UpperArm
+    400054: SHEEP_ Spine
+    400056: SHEEP_ Spine1
+    400058: Sheep_Path
+    400060: Sheep_Rig
+    2100000: Sheep_Tex_Mat
+    4300000: Sheep
+    7400000: Normal
+    7400002: Action
     9500000: //RootNode
-    11100000: //RootNode
-    13700000: SHEEP
+    13700000: Sheep
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -94,10 +94,66 @@ ModelImporter:
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
-    animationWrapMode: 2
+    animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Normal
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 232
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Action
+      takeName: Take 001
+      firstFrame: 232
+      lastFrame: 550
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
@@ -142,12 +198,12 @@ ModelImporter:
     rootMotionBoneName: 
     rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
-    hasExtraRoot: 1
+    hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 1
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
-  assetBundleName: volume1
+  assetBundleName: 
   assetBundleVariant: 

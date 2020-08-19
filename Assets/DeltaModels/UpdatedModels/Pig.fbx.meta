@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 2567c3a61ca7d6c459199226ba0665d5
+guid: d5b1f4577cb0ca5499e1076698ff537d
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
@@ -43,10 +43,10 @@ ModelImporter:
     100074: mixamorig:Spine
     100076: mixamorig:Spine1
     100078: mixamorig:Spine2
-    100080: //RootNode
-    100082: Pig
-    100084: Rig
-    100086: sunDirection
+    100080: Pig
+    100082: //RootNode
+    100084: Pig_Rig
+    100086: Rig
     400000: mixamorig:Head
     400002: mixamorig:HeadTop_End
     400004: mixamorig:LeftArm
@@ -89,14 +89,13 @@ ModelImporter:
     400078: mixamorig:Spine2
     400080: //RootNode
     400082: Pig
-    400084: Rig
-    400086: sunDirection
-    2100000: lambert2
+    400084: Pig_Rig
+    400086: Rig
+    2100000: Pig_Tex_Mat
     4300000: Pig
-    7400000: Take 001
+    7400000: Normal
+    7400002: Action
     9500000: //RootNode
-    10800000: sunDirection
-    11100000: //RootNode
     13700000: Pig
   externalObjects: {}
   materials:
@@ -121,10 +120,66 @@ ModelImporter:
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
-    animationWrapMode: 2
+    animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Normal
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 168
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Action
+      takeName: Take 001
+      firstFrame: 169
+      lastFrame: 700
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
@@ -169,12 +224,12 @@ ModelImporter:
     rootMotionBoneName: 
     rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
-    hasExtraRoot: 1
+    hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 1
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
-  assetBundleName: volume1
+  assetBundleName: 
   assetBundleVariant: 

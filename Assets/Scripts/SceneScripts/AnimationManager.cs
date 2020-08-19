@@ -16,7 +16,7 @@ public class AnimationManager : Singleton<AnimationManager>
         EventManager.Instance.OnTrackingFound -= OnTrackingFound;
     }
 
-    private void OnTrackingFound(string trackableName, GameObject trackableObject)=> TrackableObject = trackableObject;
+    private void OnTrackingFound(string trackableName, GameObject trackableObject) => TrackableObject = trackableObject;
 
     void Start()
     {
@@ -27,11 +27,17 @@ public class AnimationManager : Singleton<AnimationManager>
     private void PlayActionAnimation()
     {
         isAnimationSwapped = !isAnimationSwapped;
+        ScanUIManager.Instance.AnimationPlayBtn.gameObject.SetActive(isAnimationSwapped);
+        ScanUIManager.Instance.AnimationPauseBtn.gameObject.SetActive(!isAnimationSwapped);
         if (isAnimationSwapped)
         {
-            TrackableObject.transform.GetChild(0).GetComponent<Animation>().clip = TrackableObject.transform.GetChild(0).GetComponent<Animation>().GetClip("Action");
+            Debug.Log("ActionPlaying");
+            TrackableObject.transform.GetChild(0).GetComponent<Animator>().SetBool("Action", true);
         }
         else
-            TrackableObject.transform.GetChild(0).GetComponent<Animation>().clip = TrackableObject.transform.GetChild(0).GetComponent<Animation>().GetClip("Idle");
+        {
+            Debug.Log("ActionStopped");
+            TrackableObject.transform.GetChild(0).GetComponent<Animator>().SetBool("Action", false);
+        }
     }
 }

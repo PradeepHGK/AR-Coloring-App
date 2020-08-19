@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using SwipeMenu;
+using Vuforia;
 
 public class UI_Manager : Pixelplacement.Singleton<UI_Manager>
 {
@@ -21,7 +22,11 @@ public class UI_Manager : Pixelplacement.Singleton<UI_Manager>
 
     void Start()
     {
-        progrssbar.GetComponent<Image>().fillAmount = 0f;
+        var vuforia = VuforiaARController.Instance;
+        vuforia.RegisterVuforiaStartedCallback(OnVuforiaStarted);
+        vuforia.RegisterOnPauseCallback(OnPaused);
+
+        progrssbar.GetComponent<UnityEngine.UI.Image>().fillAmount = 0f;
         splashscreen.gameObject.SetActive(true);
         menuScreen.gameObject.SetActive(false);
 
@@ -32,6 +37,22 @@ public class UI_Manager : Pixelplacement.Singleton<UI_Manager>
             menuScreen.SetActive(true);
         }
         //changescr = screenStates.menuscreen;
+    }
+
+    private void OnVuforiaStarted()
+    {
+        CameraDevice.Instance.SetFocusMode(
+            CameraDevice.FocusMode.FOCUS_MODE_CONTINUOUSAUTO);
+    }
+
+    private void OnPaused(bool paused)
+    {
+        if (!paused) // resumed
+        {
+            // Set again autofocus mode when app is resumed
+            CameraDevice.Instance.SetFocusMode(
+                CameraDevice.FocusMode.FOCUS_MODE_CONTINUOUSAUTO);
+        }
     }
 
     private void AssignClickListener()
@@ -52,23 +73,27 @@ public class UI_Manager : Pixelplacement.Singleton<UI_Manager>
 
     public IEnumerator OnClickTryDemo()
     {
+        Debug.Log($"GetActiveScene1: {SceneManager.GetActiveScene().name}");
         changescr = screenStates.ScanScreen;
-        yield return null;
+        SceneManager.LoadScene("ScanScene");
+        yield return new WaitForSeconds(2);
+        Debug.Log($"GetActiveScene2: {SceneManager.GetActiveScene().name}");
 
-        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("ScanScene");
-        asyncOperation.allowSceneActivation = false;
-        Debug.Log("Pro :" + asyncOperation.progress);
-        while (!asyncOperation.isDone)
-        {
-            loadingpercent.text = "Loading progress: " + (asyncOperation.progress * 100) + "%";
-            if (asyncOperation.progress >= 0.9f)
-            {
-                loadingpercent.text = "SceneLoading";
-                asyncOperation.allowSceneActivation = true;
-                SceneManager.LoadScene("ScanScene");
-            }
-            yield return null;
-        }
+        /*        
+                AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("ScanScene");
+                asyncOperation.allowSceneActivation = false;
+                Debug.Log("Pro :" + asyncOperation.progress);
+                while (!asyncOperation.isDone)
+                {
+                    loadingpercent.text = "Loading progress: " + (asyncOperation.progress * 100) + "%";
+                    if (asyncOperation.progress >= 0.9f)
+                    {
+                        loadingpercent.text = "SceneLoading";
+                        asyncOperation.allowSceneActivation = true;
+                        SceneManager.LoadScene("ScanScene");
+                    }
+                    yield return null;
+                }*/
     }
 
     public void Login()
@@ -109,9 +134,9 @@ public class UI_Manager : Pixelplacement.Singleton<UI_Manager>
     {
         if (coolingDown == true)
         {
-            progrssbar.GetComponent<Image>().fillAmount += 0.4f / waitTime * Time.deltaTime;
+            progrssbar.GetComponent<UnityEngine.UI.Image>().fillAmount += 0.4f / waitTime * Time.deltaTime;
 
-            if (progrssbar.GetComponent<Image>().fillAmount == 1.0f)
+            if (progrssbar.GetComponent<UnityEngine.UI.Image>().fillAmount == 1.0f)
             {
                 Screen.orientation = ScreenOrientation.Portrait;
                 signScreen.SetActive(true);
