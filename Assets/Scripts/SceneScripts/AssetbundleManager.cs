@@ -7,7 +7,6 @@ using System;
 
 public class AssetbundleManager : Pixelplacement.Singleton<AssetbundleManager>
 {
-
     private AssetBundle assetbundle;
     public AssetBundle DeltaAssetbundle { get { return assetbundle; } }
     private WWW www;
@@ -19,7 +18,8 @@ public class AssetbundleManager : Pixelplacement.Singleton<AssetbundleManager>
     private GameObject loadingImage;
     public GameObject LoadingImage { get { return loadingImage; } set { loadingImage = value; } }
     public GameObject ParentRef;
-
+    private bool isBundleDownloading;
+    public bool IsBundleDownloading { get { return isBundleDownloading; } set { isBundleDownloading = value; } }
     void OnEnable()
     {
         EventManager.Instance.DownloadAssetbundle += DownloadAssetbundle;
@@ -44,6 +44,7 @@ public class AssetbundleManager : Pixelplacement.Singleton<AssetbundleManager>
 
     public IEnumerator AssetBundleDownload(Action OnComplete)
     {
+        isBundleDownloading = true;
         bool isDownloadInterrupted = false;
         string fbxFile = Application.persistentDataPath + "/" + "volume1";
 

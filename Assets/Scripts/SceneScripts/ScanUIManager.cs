@@ -106,16 +106,18 @@ public class ScanUIManager : Singleton<ScanUIManager>
             ActivationScreen.SetActive(true);
             downloadimage.GetComponent<Image>().fillAmount = 1;
             UI_Manager.Instance.changescr = screenStates.ActivationScreen;
+            backbtn.GetComponent<Button>().interactable = false;
             EventManager.Instance.DownloadAssetbundleInvoke();
         }
         else
         {
-            Debug.Log("BundleLoaded");
+            //Debug.Log("BundleLoaded");
             Screen.orientation = ScreenOrientation.Landscape;
             ScanScreen.SetActive(true);
             ProductScreen.SetActive(false);
             StartCoroutine(AssetbundleManager.Instance.LoadBundles());
             downloadimage.GetComponent<Image>().fillAmount = 0;
+            backbtn.GetComponent<Button>().interactable = true;
             UI_Manager.Instance.changescr = screenStates.ScanScreen;
         }
     }
@@ -126,7 +128,11 @@ public class ScanUIManager : Singleton<ScanUIManager>
         Screen.orientation = ScreenOrientation.Landscape;
         ActivationScreen.SetActive(false);
         ProductScreen.gameObject.SetActive(true);
-        StartCoroutine(AssetbundleManager.Instance.AssetBundleDownload(delegate () { }));
+        StartCoroutine(AssetbundleManager.Instance.AssetBundleDownload(delegate () 
+        {
+            AssetbundleManager.Instance.IsBundleDownloading = false;
+            backbtn.GetComponent<Button>().interactable = true;
+        }));
 
         UI_Manager.Instance.changescr = screenStates.downloading;
     }

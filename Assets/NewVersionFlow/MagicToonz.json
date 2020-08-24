@@ -1,0 +1,57 @@
+{
+    "Books": [
+        {
+            "VuforiaURL": {
+                "xmlURL": "",
+                "datURL": ""
+            },
+            "name": "volume1",
+            "bundleURL": "",
+            "dataAdded": "",
+            "BookIconURL": "",
+            "pages": [
+                {
+                    "name": "Rabbit",
+                    "Address": "Rabbit",
+                    "AudioURL": ""
+                },
+                {
+                    "name": "Donkey",
+                    "Address": "Donkey",
+                    "AudioURL": ""
+                },
+                {
+                    "name": "Horse",
+                    "Address": "Horse",
+                    "AudioURL": ""
+                },
+                {
+                    "name": "Cat",
+                    "Address": "Cat",
+                    "AudioURL": ""
+                },
+                {
+                    "name": "Sheep",
+                    "Address": "Sheep",
+                    "AudioURL": ""
+                },
+                {
+                    "name": "Buffalo",
+                    "Address": "Buffalo",
+                    "AudioURL": ""
+                },
+                {
+                    "name": "Goat",
+                    "Address": "Goat",
+                    "AudioURL": ""
+                },
+                {
+                    "name": "Pig",
+                    "Address": "Pig",
+                    "AudioURL": ""
+                }
+            ]
+        }
+    ]
+}
+
