@@ -52,7 +52,7 @@ public class AssetbundleManager : Pixelplacement.Singleton<AssetbundleManager>
         ScanUIManager.Instance.DownloadingText.GetComponent<Text>().text = "Downloading please wait..";
         while (!www.isDone && www.error == null)
         {
-
+            ScanUIManager.Instance.downloadProgressbar.value = www.progress;
 #if UNITY_EDITOR
             Debug.Log(www.progress * 100);
 #endif

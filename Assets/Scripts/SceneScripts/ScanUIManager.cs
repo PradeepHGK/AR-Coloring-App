@@ -12,6 +12,12 @@ public class ScanUIManager : Singleton<ScanUIManager>
     [SerializeField] private GameObject ActivationScreen;
     [SerializeField] private GameObject ScanScreen;
     [SerializeField] private GameObject downloadimage;
+
+    public Slider downloadProgressbar { get { return Progressbar; } set { Progressbar = value; } }
+    [SerializeField] private Slider Progressbar;
+
+    public float progressvalue;
+
     public GameObject DownloadImage
     {
         get
@@ -57,13 +63,11 @@ public class ScanUIManager : Singleton<ScanUIManager>
     private void OnTrackingFound(string arg1, GameObject arg2)
     {
         ScanScreen.gameObject.SetActive(true);
-        Debug.Log("ScanScene OntrackingFound");
     }
 
     private void OnTrackingLost()
     {
         ScanScreen.gameObject.SetActive(false);
-        Debug.Log("ScanScene OntrackingLost");
     }
 
     void Start()
@@ -128,7 +132,7 @@ public class ScanUIManager : Singleton<ScanUIManager>
         Screen.orientation = ScreenOrientation.Landscape;
         ActivationScreen.SetActive(false);
         ProductScreen.gameObject.SetActive(true);
-        StartCoroutine(AssetbundleManager.Instance.AssetBundleDownload(delegate () 
+        StartCoroutine(AssetbundleManager.Instance.AssetBundleDownload(delegate ()
         {
             AssetbundleManager.Instance.IsBundleDownloading = false;
             backbtn.GetComponent<Button>().interactable = true;
