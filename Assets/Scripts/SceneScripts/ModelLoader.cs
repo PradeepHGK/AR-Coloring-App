@@ -8,7 +8,6 @@ using UnityEngine.Collections;
 public class ModelLoader : Pixelplacement.Singleton<ModelLoader>
 {
     private GameObject Model { get; set; }
-
     private void OnEnable()
     {
         EventManager.Instance.OnTrackingFound += LoadModel_OnTrackingFound;
@@ -37,13 +36,12 @@ public class ModelLoader : Pixelplacement.Singleton<ModelLoader>
             AssignRC(trackableObject);
             ApplyModelScaleRotation(Model);
             EventManager.Instance.PlayAudioInvoke(AssetbundleManager.Instance.DeltaAssetbundle.LoadAsset<AudioClip>(trackableName + ".mp3"));
-
         }
         else
         {
             trackableObject.transform.GetChild(0).gameObject.SetActive(true);
             var audioClip = AssetbundleManager.Instance.DeltaAssetbundle.LoadAsset<AudioClip>(trackableName + ".mp3");
-            Debug.Log($"SecondTimeAudio: {audioClip.name}");
+            //Debug.Log($"SecondTimeAudio: {audioClip.name}");
             EventManager.Instance.PlayAudioInvoke(audioClip);
         }
 
