@@ -5,11 +5,11 @@ routes.get('/api/v1', (req, res) => {
 })
 
 
-routes.post('/api/v1/:username/:password([0-9](8))', (req, res, err) => {
+routes.post('/api/v1/:username/:password', (req, res, err) => {
     res.json({
         userName: req.params.username,
         password: req.params.password,
-        created_date: Date.now.toString()
+        created_date: Date.now
     });
 })
 
