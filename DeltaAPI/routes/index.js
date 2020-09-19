@@ -1,7 +1,14 @@
 const routes = require('express').Router();
+var datetime = require('node-datetime');
 
 routes.get('/api/v1', (req, res) => {
-    res.status(200).json({ message: 'Connected!' });
+    console.log(datetime.create()._now.getDate.toString())
+    res.status(200).json(
+        {
+            message: 'Connected',
+            startTime: 'Hello',
+        }
+    );
 })
 
 
@@ -13,4 +20,10 @@ routes.post('/api/v1/:username/:password', (req, res, err) => {
     });
 })
 
-module.exports = routes;
+
+routes.post('/api/v1/:secretCode', (req, res, err) => {
+
+})
+
+
+module.exports = routes, datetime;
