@@ -12,7 +12,8 @@ var GenerateKeys = function (value = Number, fileName = String) {
         var range = uuid1.substring(0, 8);
         console.log(uuid1, typeof (uuid1), "---", uuid1.substring(0, 8));
 
-        var content =  index + " " + range + os.EOL;
+        //index + " " +
+        var content = range + os.EOL;
         fs.appendFile('./' + fileName , content , (err) => {
             if (err) {
                 console.log("Error: ", err);
@@ -23,4 +24,4 @@ var GenerateKeys = function (value = Number, fileName = String) {
 
 
 
-GenerateKeys(100, "Volume2.txt");
+GenerateKeys(100, "Volume1.txt");
