@@ -1,11 +1,15 @@
 var app = require('express')();
 var routes = require('./routes');
 var os = require('os')
+var bodyParser=require('body-parser');
+
 var datetime = require('node-datetime');
 
 port = process.env.PORT | 3805;
 
 app.use('/', routes);
+app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.json());
 
 app.get('/tests', (req, res)=>{
     res.json({

@@ -19,14 +19,15 @@ routes.post('/api/v1/login/:username/:password', (req, res, err) => {
                 if (rows !== 'undefined' && rows.length == 0) {
                     console.log("undefined");
                     return res.json({
+                        "status": false,
                         "message": "User details are not available",
-                        "status": "userid not found"
                     });
                 }
                 else {
                     return res.status(200).json(
                         {
-                            rows,
+                            data: rows,
+                            'status': true,
                             "message": "New User successfully",
                         });
                 }
@@ -37,17 +38,6 @@ routes.post('/api/v1/login/:username/:password', (req, res, err) => {
 
 //Login - get user details 
 routes.get('/api/v1/login/:username/:password', (req, res, err) => {
-
-    // dbConnection.query("SELECT * FROM users", (err, results, fields) => {
-    //     console.log("All users", results);
-    //     if(err){
-    //         console.log("Error: ", err);
-    //     }
-    //     else{
-    //         res.json(results);
-    //     }
-    // });
-    // username = ? AND password = ?
     dbConnection.query("SELECT * FROM users WHERE username =? AND password=?",
         [
             req.params.username,
@@ -68,7 +58,7 @@ routes.get('/api/v1/login/:username/:password', (req, res, err) => {
                 }
                 else {
                     return res.status(200).json({
-                        rows,
+                        data: rows,
                         "message": "User details loaded successfully",
                         // "details": rows
                     });
@@ -82,16 +72,24 @@ routes.get('/api/v1/login/:username/:password', (req, res, err) => {
 routes.get('/api/v1/verifyBook/:secretCode', (req, res, err) => {
 
     console.log("Secret Key", req.params.secretCode);
-    dbConnection.query("SELECT secretKey FROM book1 where secretKey = ?", [req.params.secretCode], (err, rows) => {
+    dbConnection.query("SELECT * FROM book1 where secretKey = ?", [req.params.secretCode], (err, rows) => {
         if (err) {
             return res.status(500);
         }
         else {
-            return res.json({
-                "status": 200,  
-                "verfication": rows,
-                "message": "Book Verfied"
-            });
+            if (rows !== 'undefined' && rows.length > 0) {
+                return res.json({
+                    "verfication": rows,
+                    status: true,
+                    message: "Code verified"
+                });
+            }
+            else {
+                return res.status(404).json({
+                    message: 'Code not found',
+                    status: false
+                })
+            }
         }
     });
 })
