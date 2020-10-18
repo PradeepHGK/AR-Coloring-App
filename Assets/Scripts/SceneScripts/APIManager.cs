@@ -41,11 +41,11 @@ public class APIManager : Singleton<APIManager>
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
-    public IEnumerator APIPOSTCall(string data)
+    public IEnumerator APIPOSTCall(string url, string data)
     {
         var jsonData = JsonUtility.ToJson(data);
 
-        var uwr = new UnityWebRequest(data, UnityWebRequest.kHttpVerbPOST);
+        var uwr = new UnityWebRequest(url, UnityWebRequest.kHttpVerbPOST);
         byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
         uwr.uploadHandler = new UploadHandlerRaw(bodyRaw);
         uwr.downloadHandler = new DownloadHandlerBuffer();
@@ -73,9 +73,9 @@ public class APIManager : Singleton<APIManager>
 [Serializable]
 public class APIURLS
 {
-    public string APIBaseURL { get { return ""; } }
+    public string APIBaseURL { get { return "http://100.25.160.49:3805/api/v1/"; } }
 
-    public string LoginAPIurl { get { return ""; } }
-    public string SignUpAPIurl { get { return ""; } }
-    public string BookValidationAPIurl { get { return ""; } }
+    public string Loginurl(string username, string password) { return $"login/{username}/{password}"; }
+    public string SignupUrl(string username, string email, string password) { return $"/signup/{username}/{email}/{password}"; }
+    public string BookValidationAPIurl(string secretCode) { return $"verifyBook/{secretCode}"; }
 }
