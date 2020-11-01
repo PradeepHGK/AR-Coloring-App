@@ -15,7 +15,7 @@ public class APIManager : Singleton<APIManager>
     /// </summary>
     /// <param name="url"></param>
     /// <returns></returns>
-    public IEnumerator APICall(string url)
+    public IEnumerator APICall(string url, Action<string> OnComplete)
     {
         var uwr = UnityWebRequest.Get(url);
         yield return uwr.SendWebRequest();
@@ -32,6 +32,7 @@ public class APIManager : Singleton<APIManager>
         else
         {
             var resp = uwr.downloadHandler.text;
+            OnComplete(resp);
             Debug.Log($"GETresp: {resp}");
         }
     }
@@ -68,14 +69,36 @@ public class APIManager : Singleton<APIManager>
             Debug.Log($"POSTresp: {resp}");
         }
     }
+
+    public void ParseJSON<T>(string resp, T value)
+    {
+        Debug.Log(value.ToString());
+        var t = JsonUtility.FromJson<T>(resp);
+    }
 }
 
 [Serializable]
 public class APIURLS
 {
     public string APIBaseURL { get { return "http://100.25.160.49:3805/api/v1/"; } }
-
     public string Loginurl(string username, string password) { return $"login/{username}/{password}"; }
     public string SignupUrl(string username, string email, string password) { return $"/signup/{username}/{email}/{password}"; }
     public string BookValidationAPIurl(string secretCode) { return $"verifyBook/{secretCode}"; }
+}
+
+
+[Serializable]
+public class Datum
+{
+    public int userid;
+    public string username;
+    public string email;
+    public string password;
+}
+
+[Serializable]
+public class LoginRoot
+{
+    public List<Datum> data;
+    public string message;
 }

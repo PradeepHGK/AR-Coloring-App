@@ -15,6 +15,12 @@ public class UI_Manager : Pixelplacement.Singleton<UI_Manager>
     public GameObject menuScreen;
     public GameObject splashscreen, progrssbar, signScreen;
 
+    [Space]
+    [SerializeField] private GameObject RegisterScreen;
+    [SerializeField] private GameObject LoginScreen;
+
+    [Space]
+
     [SerializeField] private float waitTime = 2.0f;
     public bool coolingDown = true;
     public Text loadingpercent;
@@ -37,6 +43,21 @@ public class UI_Manager : Pixelplacement.Singleton<UI_Manager>
             menuScreen.SetActive(true);
         }
         //changescr = screenStates.menuscreen;
+    }
+
+
+    private void OnClickLogin(string username, string password)
+    {
+        APIManager.Instance.APICall(APIManager.Instance.APIurl.APIBaseURL + APIManager.Instance.APIurl.Loginurl(username, password), (resp)=> 
+        {
+            Debug.Log($"resp: {resp}");
+            var response = JsonUtility.FromJson<LoginRoot>(resp);
+
+            if (response.message.Contains("success"))
+            {
+                Login();
+            }
+        });
     }
 
     private void OnVuforiaStarted()
