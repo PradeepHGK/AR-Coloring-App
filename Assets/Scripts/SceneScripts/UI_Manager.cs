@@ -18,16 +18,29 @@ public class UI_Manager : Pixelplacement.Singleton<UI_Manager>
     [Space]
     [SerializeField] private GameObject RegisterScreen;
     [SerializeField] private GameObject LoginScreen;
+    [SerializeField] private Text loginErrorText;
 
     [Space]
-
     [SerializeField] private float waitTime = 2.0f;
     public bool coolingDown = true;
     public Text loadingpercent;
     private AssetBundle assetbundle;
 
+    [Header("InputFields")]
+    [SerializeField] private InputField emailField;
+    [SerializeField] private InputField passwordField;
+    [SerializeField] private InputField userNameField;
+
+
+    [Header("Buttons")]
+    [SerializeField] private Button SignInButton;
+    [SerializeField] private Button SignUpButton;
+
     void Start()
     {
+        //button references 
+        SignInButton.onClick.AddListener(Login);
+
         var vuforia = VuforiaARController.Instance;
         vuforia.RegisterVuforiaStartedCallback(OnVuforiaStarted);
         vuforia.RegisterOnPauseCallback(OnPaused);
@@ -48,14 +61,16 @@ public class UI_Manager : Pixelplacement.Singleton<UI_Manager>
 
     private void OnClickLogin(string username, string password)
     {
-        APIManager.Instance.APICall(APIManager.Instance.APIurl.APIBaseURL + APIManager.Instance.APIurl.Loginurl(username, password), (resp)=> 
+        Debug.LogError($"API Call");
+
+        APIManager.Instance.APICall(APIManager.Instance.APIurl.Loginurl(username, password), (resp) =>
         {
             Debug.Log($"resp: {resp}");
             var response = JsonUtility.FromJson<LoginRoot>(resp);
 
             if (response.message.Contains("success"))
             {
-                Login();
+                //Login();
             }
         });
     }
@@ -96,15 +111,28 @@ public class UI_Manager : Pixelplacement.Singleton<UI_Manager>
     {
         changescr = screenStates.ScanScreen;
         SceneManager.LoadScene("ScanScene");
-        yield return new WaitForSeconds(2);    }
+        yield return new WaitForSeconds(2);
+    }
 
     public void Login()
     {
-        Screen.orientation = ScreenOrientation.Landscape;
-        signScreen.SetActive(false);
-        splashscreen.SetActive(false);
-        menuScreen.gameObject.SetActive(true);
-        changescr = screenStates.signin;
+        if (!string.IsNullOrEmpty(emailField.text))
+        {
+            Debug.LogError($"LoginBtnClicked");
+            Screen.orientation = ScreenOrientation.Landscape;
+            signScreen.SetActive(false);
+            splashscreen.SetActive(false);
+            menuScreen.gameObject.SetActive(true);
+            changescr = screenStates.signin;
+
+            OnClickLogin(emailField.text, passwordField.text);
+            loginErrorText.gameObject.SetActive(false);
+        }
+        else
+        {
+            loginErrorText.gameObject.SetActive(true);
+            loginErrorText.text = "Email field shouldn't be empty";
+        }
     }
     public void Products()
     {

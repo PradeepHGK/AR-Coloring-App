@@ -12,7 +12,7 @@ public class ScanScene : MonoBehaviour
     [Header("Screens")]
     public GameObject downloadingScreen, Scanscreen;
     public bool audioBool;
-
+    
     AssetBundle assetBundle;
     public LoadBundler loadBundleRef;
 

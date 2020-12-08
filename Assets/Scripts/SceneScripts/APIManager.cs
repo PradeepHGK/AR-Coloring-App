@@ -81,7 +81,7 @@ public class APIManager : Singleton<APIManager>
 public class APIURLS
 {
     public string APIBaseURL { get { return "http://100.25.160.49:3805/api/v1/"; } }
-    public string Loginurl(string username, string password) { return $"login/{username}/{password}"; }
+    public string Loginurl(string username, string password) { return $"{APIBaseURL}/login/{username}/{password}"; }
     public string SignupUrl(string username, string email, string password) { return $"/signup/{username}/{email}/{password}"; }
     public string BookValidationAPIurl(string secretCode) { return $"verifyBook/{secretCode}"; }
 }
