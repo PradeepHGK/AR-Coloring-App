@@ -2142,6 +2142,21 @@ Prefab:
       propertyPath: m_AnchoredPosition.y
       value: 13
       objectReference: {fileID: 0}
+    - target: {fileID: 114688018426370340, guid: ffcf53742117348428203f11b1334f61,
+        type: 2}
+      propertyPath: m_ContentType
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 114688018426370340, guid: ffcf53742117348428203f11b1334f61,
+        type: 2}
+      propertyPath: m_KeyboardType
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 114688018426370340, guid: ffcf53742117348428203f11b1334f61,
+        type: 2}
+      propertyPath: m_CharacterValidation
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ffcf53742117348428203f11b1334f61, type: 2}
   m_IsPrefabParent: 0

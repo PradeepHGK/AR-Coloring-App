@@ -47,14 +47,17 @@ public class UI_Manager : Pixelplacement.Singleton<UI_Manager>
         vuforia.RegisterOnPauseCallback(OnPaused);
 
         progrssbar.GetComponent<UnityEngine.UI.Image>().fillAmount = 0f;
-        splashscreen.gameObject.SetActive(true);
-        menuScreen.gameObject.SetActive(false);
 
-        if (screenChange == "FromScan")
+        if (PlayerPrefs.GetString("UserSigned") == "Success" || screenChange == "FromScan")
         {
             coolingDown = false;
             splashscreen.SetActive(false);
             menuScreen.SetActive(true);
+        }
+        else
+        {
+            splashscreen.gameObject.SetActive(true);
+            menuScreen.gameObject.SetActive(false);
         }
         //changescr = screenStates.menuscreen;
     }
@@ -62,8 +65,8 @@ public class UI_Manager : Pixelplacement.Singleton<UI_Manager>
 
     private IEnumerator OnClickLogin(string email, string password = null)
     {
-        //Debug.LogError($"API Call - {email}  {APIManager.Instance.APIurl.SignupUrl(email)}");
         var url = APIManager.Instance.APIurl.SignupUrl(email);
+
         var uwr = UnityWebRequest.Get(url);
         yield return uwr.SendWebRequest();
 
@@ -85,29 +88,20 @@ public class UI_Manager : Pixelplacement.Singleton<UI_Manager>
 
             if (response.message.Contains("Success"))
             {
-                Screen.orientation = ScreenOrientation.Landscape;
-                signScreen.SetActive(false);
-                splashscreen.SetActive(false);
-                menuScreen.gameObject.SetActive(true);
-                changescr = screenStates.signin;
+                PostLoginEnableMenuScreen();
+                PlayerPrefs.SetString("UserSigned", "Success");
+                Debug.Log("UserSigned: " + PlayerPrefs.GetString("UserSigned"));
             }
         }
+    }
 
-        /*        APIManager.Instance.APICall(APIManager.Instance.APIurl.SignupUrl(email), (resp) =>
-                {
-                    Debug.Log($"resp: {resp}");
-                    var response = JsonUtility.FromJson<Subscribe>(resp);
-
-                    if (response.message.Contains("success"))
-                    {
-                        Screen.orientation = ScreenOrientation.Landscape;
-                        signScreen.SetActive(false);
-                        splashscreen.SetActive(false);
-                        menuScreen.gameObject.SetActive(true);
-                        changescr = screenStates.signin;
-                    }   
-                });
-        */
+    private void PostLoginEnableMenuScreen()
+    {
+        Screen.orientation = ScreenOrientation.Landscape;
+        signScreen.SetActive(false);
+        splashscreen.SetActive(false);
+        menuScreen.gameObject.SetActive(true);
+        changescr = screenStates.signin;
     }
 
     private void OnVuforiaStarted()
@@ -151,16 +145,24 @@ public class UI_Manager : Pixelplacement.Singleton<UI_Manager>
 
     public void Login()
     {
-        if (!string.IsNullOrEmpty(emailField.text))
+        if (PlayerPrefs.GetString("UserSigned") == "Success")
         {
-            Debug.LogError($"LoginBtnClicked");
-            StartCoroutine(OnClickLogin(emailField.text));
-            loginErrorText.gameObject.SetActive(false);
+            if (!string.IsNullOrEmpty(emailField.text))
+            {
+                //Debug.LogError($"LoginBtnClicked");
+                StartCoroutine(OnClickLogin(emailField.text));
+                loginErrorText.gameObject.SetActive(false);
+            }
+            else
+            {
+                PlayerPrefs.SetString("UserSigned", "NotLogged");
+                loginErrorText.gameObject.SetActive(true);
+                loginErrorText.text = "Email field shouldn't be empty";
+            }
         }
         else
         {
-            loginErrorText.gameObject.SetActive(true);
-            loginErrorText.text = "Email field shouldn't be empty";
+            PostLoginEnableMenuScreen();
         }
     }
     public void Products()
@@ -197,8 +199,11 @@ public class UI_Manager : Pixelplacement.Singleton<UI_Manager>
             if (progrssbar.GetComponent<UnityEngine.UI.Image>().fillAmount == 1.0f)
             {
                 Screen.orientation = ScreenOrientation.Portrait;
-                signScreen.SetActive(true);
-                coolingDown = false;
+                if (PlayerPrefs.GetString("UserSigned") != "Success")
+                {
+                    signScreen.SetActive(true);
+                    coolingDown = false;
+                }
             }
         }
 
