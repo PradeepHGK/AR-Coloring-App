@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using SwipeMenu;
 using Vuforia;
+using UnityEngine.Networking;
 
 public class UI_Manager : Pixelplacement.Singleton<UI_Manager>
 {
@@ -59,20 +60,54 @@ public class UI_Manager : Pixelplacement.Singleton<UI_Manager>
     }
 
 
-    private void OnClickLogin(string username, string password)
+    private IEnumerator OnClickLogin(string email, string password = null)
     {
-        Debug.LogError($"API Call");
+        //Debug.LogError($"API Call - {email}  {APIManager.Instance.APIurl.SignupUrl(email)}");
+        var url = APIManager.Instance.APIurl.SignupUrl(email);
+        var uwr = UnityWebRequest.Get(url);
+        yield return uwr.SendWebRequest();
 
-        APIManager.Instance.APICall(APIManager.Instance.APIurl.Loginurl(username, password), (resp) =>
+        while (!uwr.isDone)
         {
-            Debug.Log($"resp: {resp}");
-            var response = JsonUtility.FromJson<LoginRoot>(resp);
+            Debug.Log($"APIGetProgress: {uwr.downloadProgress}");
+        }
 
-            if (response.message.Contains("success"))
+        Debug.LogError($"{uwr.error}");
+        if (uwr.isNetworkError || uwr.isHttpError)
+        {
+            Debug.LogError($"NetworkError: {uwr.isNetworkError} {uwr.isHttpError}");
+        }
+        else
+        {
+            var resp = uwr.downloadHandler.text;
+            Debug.Log($"GETresp: {resp}");
+            var response = JsonUtility.FromJson<Subscribe>(resp);
+
+            if (response.message.Contains("Success"))
             {
-                //Login();
+                Screen.orientation = ScreenOrientation.Landscape;
+                signScreen.SetActive(false);
+                splashscreen.SetActive(false);
+                menuScreen.gameObject.SetActive(true);
+                changescr = screenStates.signin;
             }
-        });
+        }
+
+        /*        APIManager.Instance.APICall(APIManager.Instance.APIurl.SignupUrl(email), (resp) =>
+                {
+                    Debug.Log($"resp: {resp}");
+                    var response = JsonUtility.FromJson<Subscribe>(resp);
+
+                    if (response.message.Contains("success"))
+                    {
+                        Screen.orientation = ScreenOrientation.Landscape;
+                        signScreen.SetActive(false);
+                        splashscreen.SetActive(false);
+                        menuScreen.gameObject.SetActive(true);
+                        changescr = screenStates.signin;
+                    }   
+                });
+        */
     }
 
     private void OnVuforiaStarted()
@@ -119,13 +154,7 @@ public class UI_Manager : Pixelplacement.Singleton<UI_Manager>
         if (!string.IsNullOrEmpty(emailField.text))
         {
             Debug.LogError($"LoginBtnClicked");
-            Screen.orientation = ScreenOrientation.Landscape;
-            signScreen.SetActive(false);
-            splashscreen.SetActive(false);
-            menuScreen.gameObject.SetActive(true);
-            changescr = screenStates.signin;
-
-            OnClickLogin(emailField.text, passwordField.text);
+            StartCoroutine(OnClickLogin(emailField.text));
             loginErrorText.gameObject.SetActive(false);
         }
         else

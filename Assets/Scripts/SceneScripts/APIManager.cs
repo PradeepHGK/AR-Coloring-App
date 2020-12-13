@@ -17,6 +17,7 @@ public class APIManager : Singleton<APIManager>
     /// <returns></returns>
     public IEnumerator APICall(string url, Action<string> OnComplete)
     {
+        Debug.Log($"LoginURL {url}");
         var uwr = UnityWebRequest.Get(url);
         yield return uwr.SendWebRequest();
 
@@ -28,6 +29,7 @@ public class APIManager : Singleton<APIManager>
         if (uwr.isNetworkError || uwr.isHttpError)
         {
 
+            Debug.LogError($"NetworkError: {uwr.isNetworkError}");
         }
         else
         {
@@ -80,9 +82,11 @@ public class APIManager : Singleton<APIManager>
 [Serializable]
 public class APIURLS
 {
-    public string APIBaseURL { get { return "http://18.188.213.11:3805/api/v1/"; } }
+    public string APIBaseURL { get { return "http://18.188.213.11:3805/api/v1"; } }
     public string Loginurl(string username, string password) { return $"{APIBaseURL}/login/{username}/{password}"; }
-    public string SignupUrl(string username, string email, string password) { return $"/signup/{username}/{email}/{password}"; }
+    public string SubscribeURL(string email) { return $"{APIBaseURL}/login/{email}"; }
+    public string SignupUrl(string email) { return $"{APIBaseURL}/signup/{email}"; }
+    //public string SignupUrl(string username, string email, string password) { return $"/signup/{username}/{email}/{password}"; }
     public string BookValidationAPIurl(string secretCode) { return $"verifyBook/{secretCode}"; }
 }
     
@@ -100,5 +104,12 @@ public class Datum
 public class LoginRoot
 {
     public List<Datum> data;
+    public string message;
+}
+
+[Serializable]
+public class Subscribe
+{
+    public int code;
     public string message;
 }
