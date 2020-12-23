@@ -12,7 +12,8 @@ public class AssetbundleManager : Pixelplacement.Singleton<AssetbundleManager>
     private WWW www;
     private ScanUIManager uiHandler;
     private GameObject Parent;
-    private string bundleurl = "https://pradeepdevbuckets.s3.ap-south-1.amazonaws.com/volume1";
+    //private string bundleurl = "https://pradeepdevbuckets.s3.ap-south-1.amazonaws.com/volume1";
+    private string bundleurl = "https://deltabackend.s3-ap-southeast-1.amazonaws.com/volume1";
     private bool _animatorParameter;
 
     private GameObject loadingImage;
