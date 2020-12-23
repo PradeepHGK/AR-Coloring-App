@@ -39,7 +39,7 @@ public class UI_Manager : Pixelplacement.Singleton<UI_Manager>
 
     void Awake()
     {
-        PlayerPrefs.DeleteAll();
+        //PlayerPrefs.DeleteAll();
     }
 
     void Start()
@@ -165,15 +165,6 @@ public class UI_Manager : Pixelplacement.Singleton<UI_Manager>
             PlayerPrefs.SetString("UserSigned", "NotLogged");
             loginErrorText.gameObject.SetActive(true);
             loginErrorText.text = "Email field shouldn't be empty";
-        }
-
-        if (PlayerPrefs.GetString("UserSigned") == "Success")
-        {
-
-        }
-        else
-        {
-            Debug.Log($"PostLoginEnableMenuScreen");
         }
     }
 

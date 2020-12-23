@@ -90,6 +90,8 @@ public class ScanUIManager : Singleton<ScanUIManager>
         {
             ScanScreen.SetActive(true);
             StartCoroutine(AssetbundleManager.Instance.LoadBundles());
+            downloadimage.GetComponent<Image>().fillAmount = 0;
+            downloadProgressbar.gameObject.SetActive(false);    
             UI_Manager.Instance.changescr = screenStates.ScanScreen;
             Debug.Log("StartScanFileExist");
         }
