@@ -37,6 +37,11 @@ public class UI_Manager : Pixelplacement.Singleton<UI_Manager>
     [SerializeField] private Button SignInButton;
     [SerializeField] private Button SignUpButton;
 
+    void Awake()
+    {
+        PlayerPrefs.DeleteAll();
+    }
+
     void Start()
     {
         //button references 
@@ -48,14 +53,18 @@ public class UI_Manager : Pixelplacement.Singleton<UI_Manager>
 
         progrssbar.GetComponent<UnityEngine.UI.Image>().fillAmount = 0f;
 
-        if (PlayerPrefs.GetString("UserSigned") == "Success" || screenChange == "FromScan")
+        // || screenChange == "FromScan"
+        if (PlayerPrefs.GetString("UserSigned") == "Success")
         {
             coolingDown = false;
             splashscreen.SetActive(false);
             menuScreen.SetActive(true);
+            Debug.Log("MenuScreen");
+            PostLoginEnableMenuScreen();
         }
         else
         {
+            Debug.Log("SplashScreen");
             splashscreen.gameObject.SetActive(true);
             menuScreen.gameObject.SetActive(false);
         }
@@ -145,26 +154,29 @@ public class UI_Manager : Pixelplacement.Singleton<UI_Manager>
 
     public void Login()
     {
-        if (PlayerPrefs.GetString("UserSigned") == "Success")
+        if (!string.IsNullOrEmpty(emailField.text))
         {
-            if (!string.IsNullOrEmpty(emailField.text))
-            {
-                //Debug.LogError($"LoginBtnClicked");
-                StartCoroutine(OnClickLogin(emailField.text));
-                loginErrorText.gameObject.SetActive(false);
-            }
-            else
-            {
-                PlayerPrefs.SetString("UserSigned", "NotLogged");
-                loginErrorText.gameObject.SetActive(true);
-                loginErrorText.text = "Email field shouldn't be empty";
-            }
+            //Debug.LogError($"LoginBtnClicked");
+            StartCoroutine(OnClickLogin(emailField.text));
+            loginErrorText.gameObject.SetActive(false);
         }
         else
         {
-            PostLoginEnableMenuScreen();
+            PlayerPrefs.SetString("UserSigned", "NotLogged");
+            loginErrorText.gameObject.SetActive(true);
+            loginErrorText.text = "Email field shouldn't be empty";
+        }
+
+        if (PlayerPrefs.GetString("UserSigned") == "Success")
+        {
+
+        }
+        else
+        {
+            Debug.Log($"PostLoginEnableMenuScreen");
         }
     }
+
     public void Products()
     {
         SceneManager.LoadScene("ScanScene");
