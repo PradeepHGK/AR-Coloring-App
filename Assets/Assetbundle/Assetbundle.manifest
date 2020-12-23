@@ -1,0 +1,7 @@
+ManifestFileVersion: 0
+CRC: 1557886368
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: volume1
+      Dependencies: {}
