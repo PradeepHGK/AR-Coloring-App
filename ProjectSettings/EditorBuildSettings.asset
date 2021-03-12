@@ -10,7 +10,7 @@ EditorBuildSettings:
     guid: 5d7a6890d0d10460bac0d3d1d9962afa
   - enabled: 1
     path: Assets/Scenes/ScanScene.unity
-    guid: 629705489dc68cf45984d457b86cc83a
-  - enabled: 1
+    guid: 8a66f9f1b257d954a9c0b1a756b45d4c
+  - enabled: 0
     path: Assets/Scenes/DemoScenes/DemoApp.unity
     guid: 213e1742580479c4f8986b039b26372c

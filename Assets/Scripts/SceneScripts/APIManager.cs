@@ -82,7 +82,7 @@ public class APIManager : Singleton<APIManager>
 [Serializable]
 public class APIURLS
 {
-    public string APIBaseURL { get { return "http://18.188.213.11:3805/api/v1"; } }
+    public string APIBaseURL { get { return "http://54.179.176.189:3805/api/v1"; } }
     public string Loginurl(string username, string password) { return $"{APIBaseURL}/login/{username}/{password}"; }
     public string SubscribeURL(string email) { return $"{APIBaseURL}/login/{email}"; }
     public string SignupUrl(string email) { return $"{APIBaseURL}/signup/{email}"; }

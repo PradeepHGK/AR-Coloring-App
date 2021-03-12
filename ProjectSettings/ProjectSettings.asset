@@ -651,7 +651,7 @@ PlayerSettings:
     ErrorHub: 0
     Hub: 0
   facebookSdkVersion: 7.9.4
-  apiCompatibilityLevel: 2
+  apiCompatibilityLevel: 3
   cloudProjectId: 4fe3a805-debe-40d3-91d6-cb1114452212
   projectName: Magic Toonz
   organizationId: unity_epki08p9cy9xca
