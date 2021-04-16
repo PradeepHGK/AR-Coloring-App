@@ -108,6 +108,13 @@ public class LoginRoot
 }
 
 [Serializable]
+public class ValidateSecretCode
+{
+    public string message;
+    public bool status;
+}
+
+[Serializable]
 public class Subscribe
 {
     public int code;

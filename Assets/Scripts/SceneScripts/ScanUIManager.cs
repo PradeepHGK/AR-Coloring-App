@@ -4,14 +4,24 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Pixelplacement;
 using System;
+using UnityEngine.Networking;
+using System.Collections;
 
 public class ScanUIManager : Singleton<ScanUIManager>
 {
     [Header("Screen References")]
     [SerializeField] private GameObject ProductScreen;
-    [SerializeField] private GameObject ActivationScreen;
     [SerializeField] private GameObject ScanScreen;
     [SerializeField] private GameObject downloadimage;
+
+    [Space]
+    [SerializeField] private GameObject ActivationScreen;
+    [SerializeField] private InputField keyField;
+    [SerializeField] private Text keyValidationMessage;
+    [SerializeField] private Button ActivateButton;
+    [Space]
+    [SerializeField] private GameObject backButton;
+
 
     public Slider downloadProgressbar { get { return Progressbar; } set { Progressbar = value; } }
     [SerializeField] private Slider Progressbar;
@@ -59,6 +69,29 @@ public class ScanUIManager : Singleton<ScanUIManager>
         EventManager.Instance.OnTrackingLost += OnTrackingLost;
     }
 
+    private void OnDisable()
+    {
+        EventManager.Instance.OnTrackingFound -= OnTrackingFound;
+        EventManager.Instance.OnTrackingLost -= OnTrackingLost;
+    }
+
+    void Start()
+    {
+        backbtn.SetActive(true);
+        errortext.text = Application.persistentDataPath.Contains("volume1").ToString();
+        CheckBundleAvailability();
+
+        //Button listeners
+        ActivateButton.onClick.AddListener(OnClickActivation);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+            Backbtn();
+    }
+
 
     private void OnTrackingFound(string arg1, GameObject arg2)
     {
@@ -68,13 +101,6 @@ public class ScanUIManager : Singleton<ScanUIManager>
     private void OnTrackingLost()
     {
         ScanScreen.gameObject.SetActive(false);
-    }
-
-    void Start()
-    {
-        backbtn.SetActive(true);
-        errortext.text = Application.persistentDataPath.Contains("volume1").ToString();
-        CheckBundleAvailability();
     }
 
     private void CheckBundleAvailability(Action<string> OnComplete = null)
@@ -97,23 +123,19 @@ public class ScanUIManager : Singleton<ScanUIManager>
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-            Backbtn();
-    }
-
     public void OnClickChapters()
     {
         if (!File.Exists(Application.persistentDataPath + "/" + "volume1"))
         {
             Screen.orientation = ScreenOrientation.Landscape;
-            ActivationScreen.SetActive(true);
+            backButton.SetActive(true);
             downloadimage.GetComponent<Image>().fillAmount = 1;
             UI_Manager.Instance.changescr = screenStates.ActivationScreen;
             backbtn.GetComponent<Button>().interactable = false;
-            EventManager.Instance.DownloadAssetbundleInvoke();
+            ActivationScreen.SetActive(true);
+
+            //TODO: Enable Download Assetbundle
+            //EventManager.Instance.DownloadAssetbundleInvoke();
         }
         else
         {
@@ -128,19 +150,70 @@ public class ScanUIManager : Singleton<ScanUIManager>
         }
     }
 
+    private IEnumerator ValidateCode(string secretCode)
+    {
+        //var url = APIManager.Instance.APIurl.SignupUrl(email);
+        var url = $"https://serveapi.herokuapp.com/delta/getallkey/{secretCode}";
+        var uwr = UnityWebRequest.Get(url);
+        yield return uwr.SendWebRequest();
+
+        while (!uwr.isDone)
+        {
+            Debug.Log($"APIGetProgress: {uwr.downloadProgress}");
+        }
+
+        Debug.LogError($"{uwr.error}");
+        if (uwr.isNetworkError || uwr.isHttpError)
+        {
+            Debug.LogError($"NetworkError: {uwr.isNetworkError} {uwr.isHttpError}");
+        }
+        else
+        {
+            while (!uwr.isDone)
+            {
+                //yield return new WaitForSeconds(.1f);
+            }
+
+            var resp = uwr.downloadHandler.text;
+            Debug.Log($"GETresp: {resp}");
+            var response = JsonUtility.FromJson<ValidateSecretCode>(resp);
+
+            if (response.status)
+            {
+                PlayerPrefs.SetString("Volume1Enabled", response.message);
+                Debug.Log("UserSigned: " + PlayerPrefs.GetString("Volume1Enabled"));
+                keyValidationMessage.text = response.message;
+            }
+            else
+            {
+                keyValidationMessage.text = response.message;
+            }
+        }
+    }
+
+
 
     public void OnClickActivation()
     {
-        Screen.orientation = ScreenOrientation.Landscape;
-        ActivationScreen.SetActive(false);
-        ProductScreen.gameObject.SetActive(true);
-        StartCoroutine(AssetbundleManager.Instance.AssetBundleDownload(delegate ()
+        if (!string.IsNullOrEmpty(keyField.text))
         {
-            AssetbundleManager.Instance.IsBundleDownloading = false;
-            backbtn.GetComponent<Button>().interactable = true;
-        }));
+            Screen.orientation = ScreenOrientation.Landscape;
+            backButton.SetActive(false);
+            ProductScreen.gameObject.SetActive(true);
 
-        UI_Manager.Instance.changescr = screenStates.downloading;
+            StartCoroutine(ValidateCode(keyField.text));
+            //StartCoroutine(AssetbundleManager.Instance.AssetBundleDownload(delegate ()
+            //{
+            //    AssetbundleManager.Instance.IsBundleDownloading = false;
+            //    backbtn.GetComponent<Button>().interactable = true;
+            //}));
+
+            UI_Manager.Instance.changescr = screenStates.downloading;
+        }
+        else
+        {
+            keyValidationMessage.text = "Please enter the secret code";
+        }
     }
 
 
@@ -149,7 +222,7 @@ public class ScanUIManager : Singleton<ScanUIManager>
         switch (UI_Manager.Instance.changescr)
         {
             case screenStates.ActivationScreen:
-                ActivationScreen.SetActive(false);
+                backButton.SetActive(false);
                 ProductScreen.SetActive(true);
                 UI_Manager.Instance.changescr = screenStates.productsList;
                 break;

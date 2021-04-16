@@ -33,7 +33,11 @@ public class AssetbundleManager : Pixelplacement.Singleton<AssetbundleManager>
 
     private void DownloadAssetbundle()
     {
-        StartCoroutine(AssetBundleDownload(delegate () { Debug.Log("LoadBundles"); ScanUIManager.Instance.OnClickChapters(); }));
+        StartCoroutine(AssetBundleDownload(delegate ()
+        {
+            //Debug.Log("LoadBundles");
+            ScanUIManager.Instance.OnClickChapters();
+        }));
     }
 
 

@@ -80,6 +80,45 @@ public class UI_Manager : Pixelplacement.Singleton<UI_Manager>
     }
 
 
+    private IEnumerator ValidateCode(string secretCode)
+    {
+        //var url = APIManager.Instance.APIurl.SignupUrl(email);
+        var url = $"https://serveapi.herokuapp.com/delta/getallkey/{secretCode}";
+        var uwr = UnityWebRequest.Get(url);
+        yield return uwr.SendWebRequest();
+
+        while (!uwr.isDone)
+        {
+            Debug.Log($"APIGetProgress: {uwr.downloadProgress}");
+        }
+
+        Debug.LogError($"{uwr.error}");
+        if (uwr.isNetworkError || uwr.isHttpError)
+        {
+            Debug.LogError($"NetworkError: {uwr.isNetworkError} {uwr.isHttpError}");
+        }
+        else
+        {
+            while (!uwr.isDone)
+            {
+                //yield return new WaitForSeconds(.1f);
+            }
+
+            var resp = uwr.downloadHandler.text;
+            Debug.Log($"GETresp: {resp}");
+            var response = JsonUtility.FromJson<ValidateSecretCode>(resp);
+
+            if (response.message.Contains("Success"))
+            {
+                PostLoginEnableMenuScreen();
+                PlayerPrefs.SetString("Volume1Enabled", response.status.ToString());
+                Debug.Log("UserSigned: " + PlayerPrefs.GetString("Volume1Enabled"));
+            }
+        }
+    }
+
+
+
     private IEnumerator OnClickLogin(string email, string password = null)
     {
         //var url = APIManager.Instance.APIurl.SignupUrl(email);
