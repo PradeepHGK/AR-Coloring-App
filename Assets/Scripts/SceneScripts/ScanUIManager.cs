@@ -1,11 +1,11 @@
-﻿using UnityEngine;
-using System.IO;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using Pixelplacement;
+﻿using Pixelplacement;
 using System;
-using UnityEngine.Networking;
 using System.Collections;
+using System.IO;
+using UnityEngine;
+using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class ScanUIManager : Singleton<ScanUIManager>
 {
@@ -62,7 +62,7 @@ public class ScanUIManager : Singleton<ScanUIManager>
     public Button AnimationPlayBtn;
     public Button AnimationPauseBtn;
 
-
+    #region Unity Methods
     private void OnEnable()
     {
         EventManager.Instance.OnTrackingFound += OnTrackingFound;
@@ -85,14 +85,14 @@ public class ScanUIManager : Singleton<ScanUIManager>
         ActivateButton.onClick.AddListener(OnClickActivation);
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
             Backbtn();
     }
+    #endregion
 
-
+    #region Event Methods
     private void OnTrackingFound(string arg1, GameObject arg2)
     {
         ScanScreen.gameObject.SetActive(true);
@@ -102,6 +102,7 @@ public class ScanUIManager : Singleton<ScanUIManager>
     {
         ScanScreen.gameObject.SetActive(false);
     }
+    #endregion
 
     private void CheckBundleAvailability(Action<string> OnComplete = null)
     {
@@ -117,7 +118,7 @@ public class ScanUIManager : Singleton<ScanUIManager>
             ScanScreen.SetActive(true);
             StartCoroutine(AssetbundleManager.Instance.LoadBundles());
             downloadimage.GetComponent<Image>().fillAmount = 0;
-            downloadProgressbar.gameObject.SetActive(false);    
+            downloadProgressbar.gameObject.SetActive(false);
             UI_Manager.Instance.changescr = screenStates.ScanScreen;
             Debug.Log("StartScanFileExist");
         }
@@ -133,6 +134,12 @@ public class ScanUIManager : Singleton<ScanUIManager>
             UI_Manager.Instance.changescr = screenStates.ActivationScreen;
             backbtn.GetComponent<Button>().interactable = false;
             ActivationScreen.SetActive(true);
+
+            //StartCoroutine(AssetbundleManager.Instance.AssetBundleDownload(delegate ()
+            //{
+            //    AssetbundleManager.Instance.IsBundleDownloading = false;
+            //    backbtn.GetComponent<Button>().interactable = true;
+            //}));
 
             //TODO: Enable Download Assetbundle
             //EventManager.Instance.DownloadAssetbundleInvoke();
@@ -176,13 +183,27 @@ public class ScanUIManager : Singleton<ScanUIManager>
 
             var resp = uwr.downloadHandler.text;
             Debug.Log($"GETresp: {resp}");
-            var response = JsonUtility.FromJson<ValidateSecretCode>(resp);
+            var response = JsonUtility.FromJson<Root>(resp);
 
             if (response.status)
             {
                 PlayerPrefs.SetString("Volume1Enabled", response.message);
                 Debug.Log("UserSigned: " + PlayerPrefs.GetString("Volume1Enabled"));
+
                 keyValidationMessage.text = response.message;
+
+                Screen.orientation = ScreenOrientation.Landscape;
+                backButton.SetActive(false);
+                ActivationScreen.SetActive(false);
+                ProductScreen.gameObject.SetActive(true);
+
+                StartCoroutine(AssetbundleManager.Instance.AssetBundleDownload(delegate ()
+                {
+                    ProductScreen.gameObject.SetActive(false);
+                    AssetbundleManager.Instance.IsBundleDownloading = false;
+                    backbtn.SetActive(true);
+                    backbtn.GetComponent<Button>().interactable = true;
+                }));
             }
             else
             {
@@ -191,31 +212,23 @@ public class ScanUIManager : Singleton<ScanUIManager>
         }
     }
 
-
-
     public void OnClickActivation()
     {
         if (!string.IsNullOrEmpty(keyField.text))
         {
-            Screen.orientation = ScreenOrientation.Landscape;
-            backButton.SetActive(false);
-            ProductScreen.gameObject.SetActive(true);
-
+            //Screen.orientation = ScreenOrientation.Landscape;
+            //backButton.SetActive(false);
+            //ProductScreen.gameObject.SetActive(true);
             StartCoroutine(ValidateCode(keyField.text));
-            //StartCoroutine(AssetbundleManager.Instance.AssetBundleDownload(delegate ()
-            //{
-            //    AssetbundleManager.Instance.IsBundleDownloading = false;
-            //    backbtn.GetComponent<Button>().interactable = true;
-            //}));
-
+            ActivateButton.interactable = false;
             UI_Manager.Instance.changescr = screenStates.downloading;
         }
         else
         {
+            ActivateButton.interactable = true;
             keyValidationMessage.text = "Please enter the secret code";
         }
     }
-
 
     public void Backbtn()
     {

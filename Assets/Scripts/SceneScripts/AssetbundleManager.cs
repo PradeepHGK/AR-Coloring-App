@@ -13,7 +13,8 @@ public class AssetbundleManager : Pixelplacement.Singleton<AssetbundleManager>
     private ScanUIManager uiHandler;
     private GameObject Parent;
     //private string bundleurl = "https://pradeepdevbuckets.s3.ap-south-1.amazonaws.com/volume1";
-    private string bundleurl = "https://deltabackend.s3-ap-southeast-1.amazonaws.com/volume1";
+    private string bundleurl = "https://firebasestorage.googleapis.com/v0/b/unityrecinfotech.appspot.com/o/delta%2Fvolume1?alt=media&token=00025d92-7be7-4f28-9e18-08feae011d05";
+    //private string bundleurl = "https://deltabackend.s3-ap-southeast-1.amazonaws.com/volume1";
     private bool _animatorParameter;
 
     private GameObject loadingImage;
@@ -21,6 +22,8 @@ public class AssetbundleManager : Pixelplacement.Singleton<AssetbundleManager>
     public GameObject ParentRef;
     private bool isBundleDownloading;
     public bool IsBundleDownloading { get { return isBundleDownloading; } set { isBundleDownloading = value; } }
+
+    #region 
     void OnEnable()
     {
         EventManager.Instance.DownloadAssetbundle += DownloadAssetbundle;
@@ -31,6 +34,14 @@ public class AssetbundleManager : Pixelplacement.Singleton<AssetbundleManager>
         EventManager.Instance.DownloadAssetbundle -= DownloadAssetbundle;
     }
 
+    // Use this for initialization
+    void Start()
+    {
+        Caching.ClearCache();
+    }
+    #endregion
+
+    #region Event Methods
     private void DownloadAssetbundle()
     {
         StartCoroutine(AssetBundleDownload(delegate ()
@@ -39,16 +50,12 @@ public class AssetbundleManager : Pixelplacement.Singleton<AssetbundleManager>
             ScanUIManager.Instance.OnClickChapters();
         }));
     }
+    #endregion
 
-
-    // Use this for initialization
-    void Start()
-    {
-        Caching.ClearCache();
-    }
 
     public IEnumerator AssetBundleDownload(Action OnComplete)
     {
+        Debug.Log($"AssetbundleDownload");
         isBundleDownloading = true;
         bool isDownloadInterrupted = false;
         string fbxFile = Application.persistentDataPath + "/" + "volume1";
@@ -80,7 +87,11 @@ public class AssetbundleManager : Pixelplacement.Singleton<AssetbundleManager>
             if (isDownloadInterrupted)
             {
                 print("Connection Error.... Retrying Download");
-                StartCoroutine(AssetBundleDownload(delegate () { Debug.Log("NetworkInteruppted"); ScanUIManager.Instance.OnClickChapters(); }));
+                StartCoroutine(AssetBundleDownload(delegate ()
+                {
+                    Debug.Log("NetworkInteruppted");
+                    ScanUIManager.Instance.OnClickChapters();
+                }));
             }
             else
             {

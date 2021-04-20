@@ -89,7 +89,7 @@ public class APIURLS
     //public string SignupUrl(string username, string email, string password) { return $"/signup/{username}/{email}/{password}"; }
     public string BookValidationAPIurl(string secretCode) { return $"verifyBook/{secretCode}"; }
 }
-    
+
 
 [Serializable]
 public class Datum
@@ -113,6 +113,23 @@ public class ValidateSecretCode
     public string message;
     public bool status;
 }
+
+public class Data
+{
+    public string _id;
+    public string volume1;
+    public int __v;
+}
+
+public class Root
+{
+    public bool status;
+    public Data data;
+    public int code;
+    public string message;
+}
+
+
 
 [Serializable]
 public class Subscribe
